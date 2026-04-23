@@ -2,7 +2,13 @@
 
 ## Visão Geral
 
-Aplicação front-end de gestão de tickets, sem backend. Todos os dados são mockados no próprio front-end.
+**Trabalho I IHC - 2026**: Plataforma de venda de ingressos para eventos (cinema, shows, etc).
+Aplicação front-end pura, sem backend. Todos os dados são mockados no próprio front-end.
+Deve aplicar as **10 Heurísticas de Nielsen** em toda a implementação.
+
+**Data de entrega:** 04/05/2026  
+**Valor:** 25 pontos  
+**Pode ser em duplas**
 
 ## Stack Tecnológica
 
@@ -80,22 +86,89 @@ src/
 - Ghost: fundo `transparent` com borda `border-neutral-300`, hover `bg-neutral-100`
 - Estado `loading` mostra spinner SVG com texto "Aguarde..."
 
+## Requisitos Funcionais (Trabalho IHC)
+
+1. **Autenticação**
+   - Login na plataforma
+   - Registro de usuário (opcional)
+
+2. **Busca e Escolha de Eventos**
+   - Listar eventos disponíveis para compra de ingressos
+   - Filtrar/buscar eventos
+
+3. **Compra de Ingressos**
+   - Escolher categorias de ingressos (ex: normal, VIP, camarote)
+   - Selecionar lugares (mapa de assentos com ocupação visual)
+   - Simular pagamento e confirmação
+
+4. **Perfil do Usuário**
+   - Listar eventos adquiridos
+   - Mostrar em ordem cronológica
+   - Separar eventos já passados dos futuros
+   - Disponibilizar ingresso digital com QR-Code
+
+5. **Design & UX**
+   - Aplicar as 10 Heurísticas de Nielsen
+   - Design minimalista, Liquid Glass
+   - Responsivo
+
+## Heurísticas de Nielsen (Obrigatórias)
+
+1. Visibilidade do status do sistema
+2. Compatibilidade entre sistema e mundo real
+3. Controle e liberdade do usuário
+4. Consistência e padrões
+5. Prevenção de erros
+6. Reconhecimento em vez de memorização
+7. Flexibilidade e eficiência de uso
+8. Design estético e minimalista
+9. Ajudar usuários a reconhecer, diagnosticar e recuperar-se de erros
+10. Ajuda e documentação
+
 ## Roteamento
 
 ```
-/                → redireciona para /auth/login
-/auth/login      → Login.vue
-/auth/register   → Register.vue
-/home            → Home.vue (protegida, em desenvolvimento)
+/                      → redireciona para /auth/login
+/auth/login            → Login.vue
+/auth/register         → Register.vue
+/home                  → Home.vue (listagem de eventos, protegida)
+/event/:id             → EventDetail.vue (detalhes, escolha categoria, mapa de assentos)
+/checkout              → Checkout.vue (carrinho, pagamento simulado)
+/profile               → Profile.vue (ingressos adquiridos, QR-Code)
+/ticket/:id            → TicketDetail.vue (ingresso digital com QR-Code)
 ```
 
 ## Dados Mockados
 
-Todos os dados de usuário, tickets, etc. devem ser definidos em arquivos dentro de `src/mocks/` como objetos TypeScript exportados. Sem chamadas HTTP reais.
+Todos os dados devem ser definidos em `src/mocks/` como objetos TypeScript exportados. Sem chamadas HTTP reais.
+
+**Estruturas de dados esperadas:**
+
+```
+src/mocks/
+├── users.ts           # Usuários (credenciais de demo)
+├── events.ts          # Eventos e dados de cinema
+├── tickets.ts         # Ingressos adquiridos (carrinho/histórico)
+└── seats.ts           # Mapa de assentos por evento
+```
 
 **Credencial de demo:**
 - E-mail: `usuario@ticket.com`
 - Senha: `123456`
+
+**Dados esperados em `events.ts`:**
+- ID do evento
+- Nome (ex: "Homem-Aranha: Sem Volta para Casa")
+- Data/hora de início
+- Local/sala de cinema
+- Descrição
+- Imagem/poster
+- Categorias de ingresso (normal R$50, VIP R$80, etc) com preços
+- Disponibilidade
+
+**Dados esperados em `seats.ts`:**
+- Mapa de assentos por evento (matriz ocupada/livre)
+- Preço por categoria de assento
 
 ## Convenções
 
