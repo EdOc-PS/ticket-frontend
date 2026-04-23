@@ -1,21 +1,30 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { PhEnvelope, PhLockKey } from '@phosphor-icons/vue'
+import { useAuth } from '../../composables/useAuth'
 import Input from '../../components/ui/Input.vue'
 import Button from '../../components/ui/Button.vue'
 
 const router = useRouter()
+const { login, isAuthenticated, getRememberedEmail } = useAuth()
 
 const email = ref('')
 const password = ref('')
 const loading = ref(false)
 const error = ref('')
 
-const MOCK_USER = {
-  email: 'usuario@ticket.com',
-  password: '123456'
-}
+onMounted(() => {
+  if (isAuthenticated.value) {
+    router.push('/home')
+    return
+  }
+
+  const rememberedEmail = getRememberedEmail()
+  if (rememberedEmail) {
+    email.value = rememberedEmail
+  }
+})
 
 async function handleLogin() {
   error.value = ''
@@ -23,7 +32,7 @@ async function handleLogin() {
 
   await new Promise(r => setTimeout(r, 800))
 
-  if (email.value === MOCK_USER.email && password.value === MOCK_USER.password) {
+  if (login(email.value, password.value)) {
     router.push('/home')
   } else {
     error.value = 'E-mail ou senha incorretos.'

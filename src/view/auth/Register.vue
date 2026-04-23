@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { PhEnvelope, PhLockKey, PhUser } from '@phosphor-icons/vue'
+import { useAuth } from '../../composables/useAuth'
+import { findUserByEmail } from '../../mocks/users'
 import Input from '../../components/ui/Input.vue'
 import Button from '../../components/ui/Button.vue'
 
 const router = useRouter()
+const { register, isAuthenticated } = useAuth()
 
 const name = ref('')
 const email = ref('')
@@ -13,6 +16,12 @@ const password = ref('')
 const confirmPassword = ref('')
 const loading = ref(false)
 const error = ref('')
+
+onMounted(() => {
+  if (isAuthenticated.value) {
+    router.push('/home')
+  }
+})
 
 async function handleRegister() {
   error.value = ''
@@ -22,21 +31,31 @@ async function handleRegister() {
     return
   }
 
+  if (findUserByEmail(email.value)) {
+    error.value = 'E-mail já cadastrado.'
+    return
+  }
+
   if (password.value !== confirmPassword.value) {
     error.value = 'As senhas não coincidem.'
     return
   }
 
   if (password.value.length < 6) {
-    error.value = 'A senha deve ter pelo menos 6 caracteres.'
+    error.value = 'A senha deve ter pelo mesmo 6 caracteres.'
     return
   }
 
   loading.value = true
   await new Promise(r => setTimeout(r, 900))
-  loading.value = false
 
-  router.push('/auth/login')
+  if (register(email.value, password.value, name.value)) {
+    router.push('/home')
+  } else {
+    error.value = 'Erro ao criar conta. Tente novamente.'
+  }
+
+  loading.value = false
 }
 </script>
 

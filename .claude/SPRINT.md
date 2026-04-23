@@ -1,33 +1,33 @@
 # Sprint — Plataforma de Venda de Ingressos
 
 **Data de entrega:** 04/05/2026  
-**Status:** Em planejamento
+**Status:** Fases 1 e 2 completas ✅
 
 ---
 
 ## Fases de Desenvolvimento
 
-### Fase 1: Fundação & Dados Mockados
+### Fase 1: Fundação & Dados Mockados ✅
 **Objetivo:** Estruturar dados e componentes base
 
-- [ ] Criar arquivo `src/mocks/users.ts` com usuários e credenciais
-- [ ] Criar arquivo `src/mocks/events.ts` com lista de eventos de cinema
+- [x] Criar arquivo `src/mocks/users.ts` com usuários e credenciais
+- [x] Criar arquivo `src/mocks/events.ts` com lista de eventos de cinema
   - Incluir: ID, nome, data, local, imagem, descrição
   - Mínimo 5 eventos (com alguns já passados para perfil)
-- [ ] Criar arquivo `src/mocks/tickets.ts` para ingressos adquiridos
-- [ ] Criar arquivo `src/mocks/seats.ts` com mapas de assentos por evento
+- [x] Criar arquivo `src/mocks/tickets.ts` para ingressos adquiridos
+- [x] Criar arquivo `src/mocks/seats.ts` com mapas de assentos por evento
   - Estrutura: matriz de ocupação + preços por categoria
 
-### Fase 2: Autenticação
+### Fase 2: Autenticação ✅
 **Objetivo:** Fluxo de login funcional
 
-- [ ] Melhorar página `Login.vue` com validação
+- [x] Melhorar página `Login.vue` com validação
   - Validar e-mail/senha contra mock
   - Mostrar mensagens de erro claras (Heurística 9)
   - Implementar "Lembrar-me" (Heurística 7)
-- [ ] Página `Register.vue` (opcional, mas recomendado)
-- [ ] Implementar contexto/store de autenticação (usuário logado)
-- [ ] Proteger rotas autenticadas
+- [x] Página `Register.vue` (opcional, mas recomendado)
+- [x] Implementar contexto/store de autenticação (usuário logado)
+- [x] Proteger rotas autenticadas
 
 ### Fase 3: Listagem de Eventos
 **Objetivo:** Exibir eventos disponíveis
