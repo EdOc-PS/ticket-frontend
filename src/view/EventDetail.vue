@@ -1,0 +1,609 @@
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import {
+  PhCaretLeft,
+  PhCaretRight,
+  PhMapPin,
+  PhClock,
+  PhCalendar,
+  PhFilmSlate,
+  PhStar,
+  PhTicket,
+  PhArmchair,
+  PhWarning,
+} from '@phosphor-icons/vue'
+import { getEventById } from '../mocks/events'
+import { getSeatMapByEventId } from '../mocks/seats'
+import type { Event } from '../mocks/events'
+import type { Seat } from '../mocks/seats'
+import Header from '../components/layout/Header.vue'
+import Footer from '../components/layout/Footer.vue'
+
+const route = useRoute()
+const router = useRouter()
+
+const event = ref<Event | null>(null)
+const seatMapData = ref(getSeatMapByEventId(0))
+const selectedSeats = ref<string[]>([])
+const selectedCategory = ref<string>('')
+const showSeatMap = ref(false)
+
+// Slide
+const currentSlide = ref(0)
+const currentCommentSlide = ref(0)
+const slides = computed(() => {
+  if (!event.value) return []
+  return [event.value.poster, event.value.poster, event.value.poster]
+})
+
+const comments = ref([
+  {
+    id: 1,
+    author: 'Maria Silva',
+    rating: 5,
+    text: 'Filme incrível! A cinematografia é de tirar o fôlego. Recomendo muito!',
+    date: '2 dias atrás'
+  },
+  {
+    id: 2,
+    author: 'João Santos',
+    rating: 4,
+    text: 'Muito bom, história envolvente do início ao fim. Apenas alguns momentos lentos no meio.',
+    date: '5 dias atrás'
+  },
+  {
+    id: 3,
+    author: 'Ana Costa',
+    rating: 5,
+    text: 'Perfeito! Emocionante, bem dirigido e com um elenco impecável. Merece todos os prêmios!',
+    date: '1 semana atrás'
+  },
+  {
+    id: 4,
+    author: 'Pedro Oliveira',
+    rating: 4,
+    text: 'Gostei bastante. Alguns efeitos visuais são impressionantes, mas o final deixou a desejar.',
+    date: '1 semana atrás'
+  },
+  {
+    id: 5,
+    author: 'Lucia Ferreira',
+    rating: 5,
+    text: 'Um dos melhores filmes que já vi! Voltaria a assistir novamente com os olhos fechados.',
+    date: '2 semanas atrás'
+  }
+])
+
+const averageRating = computed(() => {
+  if (comments.value.length === 0) return 0
+  const sum = comments.value.reduce((acc, c) => acc + c.rating, 0)
+  return parseFloat((sum / comments.value.length).toFixed(1))
+})
+
+const eventStatus = computed(() => {
+  if (!event.value) return 'current'
+  const eventDate = new Date(event.value.date)
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  if (eventDate < today) return 'past'
+
+  const daysUntil = Math.ceil((eventDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+  if (daysUntil > 7) return 'coming-soon'
+
+  return 'current'
+})
+
+const isAvailable = computed(() => eventStatus.value !== 'past')
+
+function prevSlide() {
+  currentSlide.value = (currentSlide.value - 1 + slides.value.length) % slides.value.length
+}
+function nextSlide() {
+  currentSlide.value = (currentSlide.value + 1) % slides.value.length
+}
+
+function prevCommentSlide() {
+  currentCommentSlide.value = (currentCommentSlide.value - 1 + comments.value.length) % comments.value.length
+}
+function nextCommentSlide() {
+  currentCommentSlide.value = (currentCommentSlide.value + 1) % comments.value.length
+}
+
+const formattedDate = computed(() => {
+  if (!event.value) return ''
+  const date = new Date(event.value.date)
+  return date.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+})
+
+const classificationColor: Record<string, string> = {
+  L: 'bg-green-500',
+  '10': 'bg-blue-500',
+  '12': 'bg-yellow-500',
+  '14': 'bg-orange-500',
+  '16': 'bg-red-500',
+  '18': 'bg-red-800',
+}
+
+const classificationLabel: Record<string, string> = {
+  L: 'Livre para todos os públicos',
+  '10': 'Não recomendado para menores de 10 anos',
+  '12': 'Não recomendado para menores de 12 anos',
+  '14': 'Não recomendado para menores de 14 anos',
+  '16': 'Não recomendado para menores de 16 anos',
+  '18': 'Não recomendado para menores de 18 anos',
+}
+
+const minPrice = computed(() => {
+  if (!event.value) return 0
+  return Math.min(...event.value.categories.map(c => c.price))
+})
+
+const totalPrice = computed(() => {
+  if (!event.value || !selectedCategory.value) return 0
+  const cat = event.value.categories.find(c => c.id === selectedCategory.value)
+  return (cat?.price ?? 0) * selectedSeats.value.length
+})
+
+function getSeatClass(seat: Seat): string {
+  if (seat.status === 'occupied') return 'bg-neutral-200 cursor-not-allowed border-neutral-300'
+  if (selectedSeats.value.includes(seat.seatNumber)) return 'bg-blue-500 border-blue-600 text-white cursor-pointer'
+  if (selectedCategory.value && seat.category !== selectedCategory.value) return 'bg-neutral-100 cursor-not-allowed border-neutral-200 opacity-40'
+  return 'bg-white border-neutral-300 hover:border-blue-400 hover:bg-blue-50 cursor-pointer'
+}
+
+function toggleSeat(seat: Seat) {
+  if (seat.status === 'occupied') return
+  if (selectedCategory.value && seat.category !== selectedCategory.value) return
+  const idx = selectedSeats.value.indexOf(seat.seatNumber)
+  if (idx === -1) {
+    selectedSeats.value.push(seat.seatNumber)
+  } else {
+    selectedSeats.value.splice(idx, 1)
+  }
+}
+
+function selectCategory(catId: string) {
+  if (selectedCategory.value === catId) return
+  selectedCategory.value = catId
+  selectedSeats.value = []
+}
+
+function openSeatMap() {
+  showSeatMap.value = true
+  setTimeout(() => {
+    document.getElementById('seat-map')?.scrollIntoView({ behavior: 'smooth' })
+  }, 100)
+}
+
+function proceedToCheckout() {
+  if (selectedSeats.value.length === 0) return
+  router.push({
+    path: '/checkout',
+    query: {
+      eventId: event.value!.id,
+      seats: selectedSeats.value.join(','),
+      category: selectedCategory.value,
+    }
+  })
+}
+
+onMounted(() => {
+  const id = Number(route.params.id)
+  event.value = getEventById(id) ?? null
+  if (event.value) {
+    seatMapData.value = getSeatMapByEventId(id)
+    selectedCategory.value = event.value.categories[0]?.id ?? ''
+  }
+})
+</script>
+
+<template>
+  <div class="min-h-screen bg-[#f5f5f7]">
+    <Header />
+
+    <div v-if="event" class="pt-20">
+
+      <!-- Header com botão voltar -->
+      <div class="max-w-5xl mx-auto px-6 py-6">
+        <button
+          @click="router.back()"
+          class="flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 transition-colors duration-200 group"
+        >
+          <div class="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center group-hover:border-neutral-400 transition-all duration-200">
+            <PhCaretLeft :size="16" weight="bold" />
+          </div>
+          Voltar
+        </button>
+      </div>
+
+      <!-- Alert para eventos não disponíveis -->
+      <div v-if="!isAvailable" class="max-w-5xl mx-auto px-6 mb-6">
+        <div class="bg-red-50 border border-red-200 rounded-2xl p-4 flex items-start gap-3">
+          <PhWarning weight="duotone" class="text-red-500 flex-shrink-0 mt-0.5" :size="20" />
+          <div>
+            <p class="font-semibold text-red-900 text-sm">Este evento já ocorreu</p>
+            <p class="text-red-700 text-xs mt-0.5">Infelizmente não é possível comprar ingressos para sessões passadas.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alert para eventos em breve -->
+      <div v-if="eventStatus === 'coming-soon'" class="max-w-5xl mx-auto px-6 mb-6">
+        <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 flex items-start gap-3">
+          <PhCalendar weight="duotone" class="text-blue-500 flex-shrink-0 mt-0.5" :size="20" />
+          <div>
+            <p class="font-semibold text-blue-900 text-sm">Estreia em breve!</p>
+            <p class="text-blue-700 text-xs mt-0.5">Ingressos serão disponibilizados em breve. Fique atento!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide de imagens -->
+      <section class="max-w-5xl mx-auto px-6 mb-8">
+        <div class="relative w-full h-[420px] rounded-3xl overflow-hidden bg-neutral-200" :class="{ 'opacity-60': !isAvailable }">
+          <transition-group name="fade">
+            <img
+              v-for="(src, i) in slides"
+              :key="i"
+              v-show="currentSlide === i"
+              :src="src"
+              :alt="event.title"
+              class="absolute inset-0 w-full h-full object-cover"
+            />
+          </transition-group>
+
+          <!-- Gradient bottom -->
+          <div class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+
+          <!-- Título sobre o slide -->
+          <div class="absolute bottom-6 left-8">
+            <span
+              class="inline-block px-2 py-0.5 rounded text-xs font-bold text-white mb-2"
+              :class="classificationColor[event.classification] ?? 'bg-neutral-500'"
+            >{{ event.classification }}</span>
+            <h1 class="font-heading text-4xl font-bold text-white drop-shadow-lg">{{ event.title }}</h1>
+          </div>
+
+          <!-- Controles -->
+          <button
+            @click="prevSlide"
+            :disabled="!isAvailable"
+            class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed"
+            style="background:rgba(255,255,255,0.2);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.3)"
+          >
+            <PhCaretLeft weight="bold" class="text-white" :size="18" />
+          </button>
+          <button
+            @click="nextSlide"
+            :disabled="!isAvailable"
+            class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed"
+            style="background:rgba(255,255,255,0.2);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.3)"
+          >
+            <PhCaretRight weight="bold" class="text-white" :size="18" />
+          </button>
+
+          <!-- Dots -->
+          <div class="absolute bottom-6 right-6 flex gap-1.5">
+            <button
+              v-for="(_, i) in slides"
+              :key="i"
+              @click="currentSlide = i"
+              class="rounded-full transition-all duration-300"
+              :class="currentSlide === i ? 'w-5 h-2 bg-white' : 'w-2 h-2 bg-white/50'"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- Cards informativos -->
+      <section class="max-w-5xl mx-auto px-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+          <!-- Sinopse -->
+          <div class="md:col-span-2 bg-white rounded-2xl p-6 border border-neutral-100">
+            <div class="flex items-center gap-2 mb-3">
+              <PhFilmSlate weight="duotone" :size="18" class="text-blue-500" />
+              <span class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Sinopse</span>
+            </div>
+            <p class="text-neutral-700 text-sm leading-relaxed">{{ event.description }}</p>
+            <div class="flex items-center gap-4 mt-4 pt-4 border-t border-neutral-100">
+              <div class="flex items-center gap-1.5 text-xs text-neutral-500">
+                <PhClock weight="duotone" :size="14" class="text-neutral-400" />
+                {{ event.duration }}
+              </div>
+              <div class="flex items-center gap-1.5 text-xs text-neutral-500">
+                <PhStar weight="duotone" :size="14" class="text-yellow-400" />
+                Muito bom
+              </div>
+            </div>
+          </div>
+
+          <!-- Faixa etária -->
+          <div class="bg-white rounded-2xl p-6 border border-neutral-100 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2 mb-3">
+                <PhWarning weight="duotone" :size="18" class="text-blue-500" />
+                <span class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Classificação</span>
+              </div>
+              <div
+                class="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-heading font-bold text-xl mb-3"
+                :class="classificationColor[event.classification] ?? 'bg-neutral-500'"
+              >
+                {{ event.classification }}
+              </div>
+              <p class="text-neutral-600 text-xs leading-relaxed">
+                {{ classificationLabel[event.classification] ?? 'Classificação indicativa' }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Sala de exibição -->
+          <div class="bg-white rounded-2xl p-6 border border-neutral-100 ">
+            <div class="flex items-center gap-2 mb-3">
+              <PhMapPin weight="duotone" :size="18" class="text-blue-500" />
+              <span class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Sala</span>
+            </div>
+            <p class="font-heading font-bold text-neutral-900 text-base">{{ event.location }}</p>
+            <p class="text-xs text-neutral-500 mt-1">Capacidade: {{ event.totalSeats }} lugares</p>
+            <div class="mt-4 pt-4 border-t border-neutral-100">
+              <div class="flex gap-3 text-xs text-neutral-500 flex-wrap">
+                <span v-for="cat in event.categories" :key="cat.id" class="flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full"
+                    :class="cat.id === 'normal' ? 'bg-neutral-400' : cat.id === 'vip' ? 'bg-blue-400' : 'bg-yellow-400'"
+                  />
+                  {{ cat.name }}: R$ {{ cat.price }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Horário -->
+          <div class="bg-white rounded-2xl p-6 border border-neutral-100 ">
+            <div class="flex items-center gap-2 mb-3">
+              <PhCalendar weight="duotone" :size="18" class="text-blue-500" />
+              <span class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Horário</span>
+            </div>
+            <p class="font-heading font-bold text-neutral-900 text-2xl">{{ event.time }}</p>
+            <p class="text-xs text-neutral-500 mt-1 capitalize">{{ formattedDate }}</p>
+            <div class="mt-4 pt-4 border-t border-neutral-100 text-xs text-neutral-500">
+              Duração aproximada: <span class="font-medium text-neutral-700">{{ event.duration }}</span>
+            </div>
+          </div>
+
+          <!-- Ingressos / CTA -->
+          <div class="bg-white rounded-2xl p-6 border border-neutral-100 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2 mb-3">
+                <PhTicket weight="duotone" :size="18" class="text-blue-500" />
+                <span class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Ingressos</span>
+              </div>
+              <p class="text-neutral-500 text-xs mb-3">A partir de</p>
+              <p class="font-heading font-bold text-3xl text-neutral-900">R$ {{ minPrice }}</p>
+              <p class="text-xs text-neutral-500 mt-1">{{ event.categories.length }} categorias disponíveis</p>
+            </div>
+            <button
+              @click="openSeatMap"
+              :disabled="!isAvailable"
+              class="mt-6 w-full py-3 px-4 bg-blue-500 hover:bg-blue-600 disabled:bg-neutral-300 disabled:cursor-not-allowed active:scale-[0.98] text-white font-semibold text-sm rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
+            >
+              <PhArmchair weight="duotone" :size="18" />
+              {{ eventStatus === 'coming-soon' ? 'Em Breve' : eventStatus === 'past' ? 'Indisponível' : 'Comprar Ingresso' }}
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Mapa de assentos -->
+      <section
+        v-if="showSeatMap && seatMapData && isAvailable"
+        id="seat-map"
+        class="max-w-5xl mx-auto px-6 mb-12"
+      >
+        <div class="bg-white rounded-2xl border border-neutral-100 shadow-sm overflow-hidden">
+
+          <!-- Topo do mapa -->
+          <div class="px-8 py-6 border-b border-neutral-100">
+            <h2 class="font-heading text-xl font-bold text-neutral-900">Escolha seus assentos</h2>
+            <p class="text-sm text-neutral-500 mt-1">Selecione a categoria e depois clique nos assentos desejados</p>
+          </div>
+
+          <!-- Seleção de categoria -->
+          <div class="px-8 py-5 border-b border-neutral-100 flex flex-wrap gap-3">
+            <button
+              v-for="cat in event.categories"
+              :key="cat.id"
+              @click="selectCategory(cat.id)"
+              class="flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-medium transition-all duration-200"
+              :class="selectedCategory === cat.id
+                ? 'bg-blue-500 border-blue-500 text-white'
+                : 'bg-white border-neutral-200 text-neutral-600 hover:border-blue-300'"
+            >
+              <span
+                class="w-2.5 h-2.5 rounded-full"
+                :class="cat.id === 'normal' ? 'bg-neutral-400' : cat.id === 'vip' ? 'bg-blue-300' : 'bg-yellow-400'"
+                :style="selectedCategory === cat.id ? 'background:white' : ''"
+              />
+              {{ cat.name }} — R$ {{ cat.price }}
+              <span class="text-xs opacity-70">({{ cat.available }} disp.)</span>
+            </button>
+          </div>
+
+          <!-- Tela do cinema -->
+          <div class="px-8 pt-8">
+            <div class="relative flex justify-center mb-8">
+              <div class="w-2/3 h-2 rounded-full bg-linear-to-r from-transparent via-neutral-300 to-transparent" />
+              <span class="absolute -bottom-5 text-xs text-neutral-400 tracking-widest uppercase">Tela</span>
+            </div>
+          </div>
+
+          <!-- Grade de assentos -->
+          <div class="px-8 pb-8 overflow-x-auto">
+            <div class="inline-block min-w-full">
+              <div
+                v-for="row in seatMapData.rows"
+                :key="row.row"
+                class="flex items-center gap-1.5 mb-1.5"
+              >
+                <span class="w-5 text-xs font-mono text-neutral-400 text-center shrink-0">{{ row.row }}</span>
+                <div class="flex gap-1.5">
+                  <button
+                    v-for="seat in row.seats"
+                    :key="seat.seatNumber"
+                    @click="toggleSeat(seat)"
+                    :disabled="seat.status === 'occupied'"
+                    :title="seat.status === 'occupied' ? 'Ocupado' : seat.seatNumber"
+                    class="w-7 h-7 rounded-md border text-[10px] font-mono transition-all duration-150"
+                    :class="getSeatClass(seat)"
+                  >
+                    <span v-if="selectedSeats.includes(seat.seatNumber)">✓</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Legenda + resumo -->
+          <div class="px-8 py-6 border-t border-neutral-100 bg-neutral-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-5 flex-wrap text-xs text-neutral-500">
+              <span class="flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-md bg-white border border-neutral-300 inline-block" />
+                Disponível
+              </span>
+              <span class="flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-md bg-blue-500 inline-block" />
+                Selecionado
+              </span>
+              <span class="flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-md bg-neutral-200 inline-block" />
+                Ocupado
+              </span>
+            </div>
+
+            <div class="flex items-center gap-4">
+              <div class="text-right">
+                <p class="text-xs text-neutral-500">
+                  {{ selectedSeats.length }} assento(s) · {{ event.categories.find(c => c.id === selectedCategory)?.name }}
+                </p>
+                <p class="font-heading font-bold text-lg text-neutral-900">R$ {{ totalPrice.toFixed(2) }}</p>
+              </div>
+              <button
+                @click="proceedToCheckout"
+                :disabled="selectedSeats.length === 0"
+                class="px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-sm rounded-xl transition-all duration-200 active:scale-[0.98] flex items-center gap-2"
+              >
+                <PhTicket weight="duotone" :size="16" />
+                Continuar
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Avaliações e comentários -->
+    <section v-if="event && eventStatus !== 'coming-soon'" class="max-w-5xl mx-auto px-6 mb-16">
+      <div class="flex items-end justify-between mb-8">
+        <div>
+          <h2 class="font-heading text-2xl font-bold text-neutral-900">Avaliações e comentários</h2>
+          <p class="text-sm text-neutral-500 mt-1">O que os espectadores acharam deste filme</p>
+        </div>
+        <div class="text-right">
+          <div class="flex items-center gap-1.5">
+            <div class="flex items-center gap-0.5">
+              <PhStar
+                v-for="i in 5"
+                :key="i"
+                weight="duotone"
+                :class="i <= Math.round(averageRating) ? 'text-yellow-400' : 'text-neutral-300'"
+                :size="18"
+              />
+            </div>
+          </div>
+          <p class="font-heading font-bold text-lg text-neutral-900 mt-0.5">{{ averageRating }}</p>
+          <p class="text-xs text-neutral-500">{{ comments.length }} avaliações</p>
+        </div>
+      </div>
+
+      <div class="relative">
+        <!-- Slider de comentários -->
+        <div class="overflow-hidden">
+          <div class="flex transition-transform duration-500" :style="{ transform: `translateX(-${currentCommentSlide * 100}%)` }">
+            <div
+              v-for="comment in comments"
+              :key="comment.id"
+              class="w-full shrink-0 px-4"
+            >
+              <div class="bg-white rounded-2xl p-6 border border-neutral-100">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <p class="font-heading font-bold text-neutral-900">{{ comment.author }}</p>
+                    <p class="text-xs text-neutral-500 mt-0.5">{{ comment.date }}</p>
+                  </div>
+                  <div class="flex items-center gap-0.5">
+                    <PhStar
+                      v-for="i in 5"
+                      :key="i"
+                      weight="duotone"
+                      :class="i <= comment.rating ? 'text-yellow-400' : 'text-neutral-300'"
+                      :size="16"
+                    />
+                  </div>
+                </div>
+                <p class="text-neutral-700 text-sm leading-relaxed">{{ comment.text }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controles -->
+        <button
+          @click="prevCommentSlide"
+          class="absolute -left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 hover:bg-neutral-100"
+        >
+          <PhCaretLeft weight="bold" class="text-neutral-600" :size="18" />
+        </button>
+        <button
+          @click="nextCommentSlide"
+          class="absolute -right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 hover:bg-neutral-100"
+        >
+          <PhCaretRight weight="bold" class="text-neutral-600" :size="18" />
+        </button>
+
+        <!-- Indicador de posição -->
+        <div class="flex justify-center gap-1.5 mt-6">
+          <button
+            v-for="(_, i) in comments"
+            :key="i"
+            @click="currentCommentSlide = i"
+            class="rounded-full transition-all duration-300"
+            :class="currentCommentSlide === i ? 'w-6 h-2 bg-neutral-400' : 'w-2 h-2 bg-neutral-300 hover:bg-neutral-400'"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Estado de erro -->
+    <div v-else class="flex flex-col items-center justify-center min-h-screen gap-4">
+      <p class="text-neutral-500">Evento não encontrado.</p>
+      <button @click="router.back()" class="text-blue-500 text-sm hover:underline">Voltar</button>
+    </div>
+
+    <Footer />
+  </div>
+</template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

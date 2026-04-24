@@ -39,24 +39,24 @@
   - Links para detalhe do evento
 - [ ] Componente `EventCard.vue` (exibição padronizada)
 
-### Fase 4: Detalhes do Evento & Escolha de Categoria
+### Fase 4: Detalhes do Evento & Escolha de Categoria ✅
 **Objetivo:** Selecionar tipo de ingresso
 
-- [ ] Criar `EventDetail.vue`
+- [x] Criar `EventDetail.vue`
   - Poster grande, sinopse, data/hora, local
   - Descrição das categorias: normal, VIP, camarote
   - Preços por categoria (Heurística 4 - consistência)
   - Botão "Escolher assento" → vai para mapa de assentos (Heurística 3)
 
-### Fase 5: Mapa de Assentos & Carrinho
+### Fase 5: Mapa de Assentos & Carrinho ✅
 **Objetivo:** Selecionar lugares e confirmar pedido
 
-- [ ] Criar `SeatMap.vue` (mapa interativo de assentos)
+- [x] Criar `SeatMap.vue` (mapa interativo de assentos) — integrado no EventDetail.vue
   - Grid visual com assentos (ocupado, livre, selecionado)
-  - Cores intuitivas: cinza (ocupado), verde (livre), azul (selecionado)
+  - Cores intuitivas: cinza (ocupado), branco (livre), azul (selecionado)
   - Mostrar preço total conforme seleção (Heurística 1 - visibilidade)
   - Botão "Continuar para pagamento"
-- [ ] Armazenar seleção em contexto/store
+- [x] Armazenar seleção em query params da rota
 
 ### Fase 6: Pagamento Simulado
 **Objetivo:** Simular checkout e confirmação

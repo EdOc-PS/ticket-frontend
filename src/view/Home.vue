@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import {
   PhCaretLeft,
   PhCaretRight,
@@ -38,6 +39,11 @@ function stopAutoplay() {
 onMounted(startAutoplay)
 onUnmounted(stopAutoplay)
 
+const router = useRouter()
+function goToEvent(id: number) {
+  router.push(`/event/${id}`)
+}
+
 const classificationColor: Record<string, string> = {
   'L': 'bg-green-500',
   '10': 'bg-blue-500',
@@ -53,7 +59,7 @@ const classificationColor: Record<string, string> = {
     <Header />
 
     <!-- Hero slider -->
-    <section class="relative h-[90vh] overflow-hidden" @mouseenter="stopAutoplay" @mouseleave="startAutoplay">
+    <section id="inicio" class="relative h-[90vh] overflow-hidden scroll-mt-24" @mouseenter="stopAutoplay" @mouseleave="startAutoplay">
       <!-- Slides -->
       <div class="relative w-full h-full">
         <transition-group name="slide-fade">
@@ -101,7 +107,7 @@ const classificationColor: Record<string, string> = {
                       <PhTicket weight="duotone" :size="18" />
                       Comprar Ingresso
                     </button>
-                    <button
+                    <button @click="goToEvent(movie.id)"
                       class="flex items-center gap-2 px-6 py-3 font-semibold rounded-xl transition-all duration-200 active:scale-95"
                       style="background: rgba(255,255,255,0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.25); color: white;"
                     >
@@ -150,7 +156,7 @@ const classificationColor: Record<string, string> = {
     </section>
 
     <!-- Em Cartaz -->
-    <section class="py-16 px-6">
+    <section id="em-cartaz" class="py-16 px-6 scroll-mt-24">
       <div class="max-w-5xl mx-auto">
         <div class="flex items-center justify-between mb-8">
           <div>
@@ -166,6 +172,7 @@ const classificationColor: Record<string, string> = {
           <div
             v-for="movie in nowPlayingMovies"
             :key="movie.id"
+            @click="goToEvent(movie.id)"
             class="shrink-0 w-44 snap-start cursor-pointer group"
           >
             <div class="relative rounded-xl overflow-hidden mb-3 aspect-2/3 bg-neutral-200">
@@ -199,7 +206,7 @@ const classificationColor: Record<string, string> = {
     </section>
 
     <!-- Em Breve -->
-    <section class="py-16 px-6 bg-white/50">
+    <section id="em-breve" class="py-16 px-6 bg-white/50 scroll-mt-24">
       <div class="max-w-5xl mx-auto">
         <div class="flex items-center justify-between mb-8">
           <div>
@@ -215,6 +222,7 @@ const classificationColor: Record<string, string> = {
           <div
             v-for="movie in comingSoonMovies"
             :key="movie.id"
+            @click="goToEvent(movie.id)"
             class="shrink-0 w-44 snap-start cursor-pointer group"
           >
             <div class="relative rounded-xl overflow-hidden mb-3 aspect-2/3 bg-neutral-200">
@@ -302,7 +310,7 @@ const classificationColor: Record<string, string> = {
     </section>
 
     <!-- Filmes em Festival -->
-    <section class="py-16 px-6 pb-24">
+    <section id="festivais" class="py-16 px-6 pb-24 scroll-mt-24">
       <div class="max-w-5xl mx-auto">
         <div class="flex items-center justify-between mb-8">
           <div>
@@ -321,6 +329,7 @@ const classificationColor: Record<string, string> = {
           <div
             v-for="movie in festivalMovies"
             :key="movie.id"
+            @click="goToEvent(movie.id)"
             class="shrink-0 w-52 snap-start cursor-pointer group"
           >
             <div class="relative rounded-xl overflow-hidden mb-3 aspect-2/3 bg-neutral-200">

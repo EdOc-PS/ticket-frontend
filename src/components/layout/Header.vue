@@ -21,10 +21,10 @@ import {
       </div>
 
       <div class="hidden md:flex items-center gap-8">
-        <a href="#" class="text-sm text-neutral-800 font-medium hover:text-blue-500 transition-colors duration-200">Filmes</a>
-        <a href="#" class="text-sm text-neutral-800 hover:text-blue-500 transition-colors duration-200">Em Cartaz</a>
-        <a href="#" class="text-sm text-neutral-800 hover:text-blue-500 transition-colors duration-200">Em Breve</a>
-        <a href="#" class="text-sm text-neutral-800 hover:text-blue-500 transition-colors duration-200">Festivais</a>
+        <router-link to="/home#inicio" class="text-sm text-neutral-800 font-medium hover:text-blue-500 transition-colors duration-200">Filmes</router-link>
+        <router-link to="/home#em-cartaz" class="text-sm text-neutral-800 hover:text-blue-500 transition-colors duration-200">Em Cartaz</router-link>
+        <router-link to="/home#em-breve" class="text-sm text-neutral-800 hover:text-blue-500 transition-colors duration-200">Em Breve</router-link>
+        <router-link to="/home#festivais" class="text-sm text-neutral-800 hover:text-blue-500 transition-colors duration-200">Festivais</router-link>
       </div>
 
       <div class="flex items-center gap-3">

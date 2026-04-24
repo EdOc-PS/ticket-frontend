@@ -4,6 +4,7 @@ import { useAuth } from '../composables/useAuth'
 import Home from '../view/Home.vue'
 import Register from '../view/auth/Register.vue'
 import Login from '../view/auth/Login.vue'
+import EventDetail from '../view/EventDetail.vue'
 
 const routes = [
   {
@@ -14,6 +15,12 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: Home,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/event/:id',
+    name: 'EventDetail',
+    component: EventDetail,
     meta: { requiresAuth: true }
   },
   {
@@ -35,7 +42,12 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior(to, _, savedPosition) {
+    if (savedPosition) return savedPosition
+    if (to.hash) return { el: to.hash, behavior: 'smooth' }
+    return { top: 0 }
+  },
 })
 
 router.beforeEach((to, _, next) => {
