@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import type { Component } from 'vue'
 
+defineOptions({ inheritAttrs: false })
+
 const isFocused = ref(false)
 
 const props = defineProps<{
@@ -11,6 +13,8 @@ const props = defineProps<{
   modelValue?: string
   icon?: Component
   disabled?: boolean
+  maxlength?: string | number
+  inputmode?: string
 }>()
 
 defineEmits<{
@@ -35,6 +39,9 @@ defineEmits<{
         :placeholder="placeholder"
         :value="modelValue"
         :disabled="disabled"
+        :maxlength="maxlength"
+        :inputmode="(inputmode as any)"
+        v-bind="$attrs"
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
         @focus="isFocused = true"
         @blur="isFocused = false"

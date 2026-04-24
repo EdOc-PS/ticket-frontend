@@ -5,8 +5,8 @@ interface Movie {
   id: number
   title: string
   genre: string
-  rating: number
-  festival: string
+  rating: string
+  festival?: string
   poster: string
 }
 

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { PhBell } from '@phosphor-icons/vue'
 
 interface Notification {
@@ -26,12 +25,6 @@ function handleToggle() {
   emit('toggle')
 }
 
-function handleClickOutside(e: MouseEvent) {
-  const target = e.target as HTMLElement
-  if (!target.closest('[data-notification-dropdown]')) {
-    emit('update:showNotifications', false)
-  }
-}
 </script>
 
 <template>

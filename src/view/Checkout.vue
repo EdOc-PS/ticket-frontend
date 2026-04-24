@@ -23,6 +23,7 @@ import { addTicket } from '../mocks/tickets'
 import type { Event } from '../mocks/events'
 import EventDetailHeader from '../components/layout/EventDetailHeader.vue'
 import Footer from '../components/layout/Footer.vue'
+import Input from '../components/ui/Input.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -73,7 +74,7 @@ const boletoCode = computed(() => {
   return `23793.38128 60007.827136 00000.000003 1 ${base}${String(totalPrice.value * 100).padStart(8, '0')}`
 })
 
-function formatCardNumber(e: Event) {
+function formatCardNumber(e: InputEvent) {
   const input = e.target as HTMLInputElement
   cardNumber.value = input.value
     .replace(/\D/g, '')
@@ -82,7 +83,7 @@ function formatCardNumber(e: Event) {
     .slice(0, 19)
 }
 
-function formatExpiry(e: Event) {
+function formatExpiry(e: InputEvent) {
   const input = e.target as HTMLInputElement
   cardExpiry.value = input.value
     .replace(/\D/g, '')
@@ -385,57 +386,45 @@ onMounted(() => {
 
                   <!-- Número do cartão -->
                   <div>
-                    <label class="text-xs font-semibold text-neutral-500 block mb-1.5">Número do cartão</label>
                     <div class="relative">
-                      <input
+                      <Input
+                        label="NÚMERO DO CARTÃO"
                         :value="cardNumber"
-                        @input="formatCardNumber"
                         placeholder="0000 0000 0000 0000"
                         maxlength="19"
                         inputmode="numeric"
-                        class="w-full px-4 py-3 pr-12 bg-white border border-neutral-200 rounded-xl text-sm text-neutral-900 placeholder-neutral-300 outline-none focus:border-blue-400 transition-colors font-mono"
+                        :icon="PhCreditCard"
+                        @input="formatCardNumber"
                       />
-                      <PhCreditCard weight="duotone" class="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-300" :size="18" />
                     </div>
                   </div>
 
                   <!-- Nome no cartão -->
-                  <div>
-                    <label class="text-xs font-semibold text-neutral-500 block mb-1.5">Nome impresso no cartão</label>
-                    <input
-                      v-model="cardHolder"
-                      placeholder="NOME SOBRENOME"
-                      class="w-full px-4 py-3 bg-white border border-neutral-200 rounded-xl text-sm text-neutral-900 placeholder-neutral-300 outline-none focus:border-blue-400 transition-colors uppercase"
-                    />
-                  </div>
+                  <Input
+                    label="NOME IMPRESSO NO CARTÃO"
+                    v-model="cardHolder"
+                    placeholder="NOME SOBRENOME"
+                  />
 
                   <!-- Validade + CVV -->
                   <div class="grid grid-cols-2 gap-3">
-                    <div>
-                      <label class="text-xs font-semibold text-neutral-500 block mb-1.5">Validade</label>
-                      <input
-                        :value="cardExpiry"
-                        @input="formatExpiry"
-                        placeholder="MM/AA"
-                        maxlength="5"
-                        inputmode="numeric"
-                        class="w-full px-4 py-3 bg-white border border-neutral-200 rounded-xl text-sm text-neutral-900 placeholder-neutral-300 outline-none focus:border-blue-400 transition-colors font-mono"
-                      />
-                    </div>
-                    <div>
-                      <label class="text-xs font-semibold text-neutral-500 block mb-1.5">CVV</label>
-                      <div class="relative">
-                        <input
-                          v-model="cardCvv"
-                          placeholder="123"
-                          maxlength="4"
-                          inputmode="numeric"
-                          type="password"
-                          class="w-full px-4 py-3 pr-10 bg-white border border-neutral-200 rounded-xl text-sm text-neutral-900 placeholder-neutral-300 outline-none focus:border-blue-400 transition-colors font-mono"
-                        />
-                        <PhLock weight="duotone" class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-300" :size="15" />
-                      </div>
-                    </div>
+                    <Input
+                      label="VALIDADE"
+                      :value="cardExpiry"
+                      placeholder="MM/AA"
+                      maxlength="5"
+                      inputmode="numeric"
+                      @input="formatExpiry"
+                    />
+                    <Input
+                      label="CVV"
+                      v-model="cardCvv"
+                      type="password"
+                      placeholder="123"
+                      maxlength="4"
+                      inputmode="numeric"
+                      :icon="PhLock"
+                    />
                   </div>
 
                   <!-- Segurança -->

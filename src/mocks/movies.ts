@@ -12,7 +12,6 @@ export interface Movie {
   festival?: string
 }
 
-const BACKDROP_BASE = 'https://images.unsplash.com/photo-'
 
 export const featuredMovies: Movie[] = [
   {

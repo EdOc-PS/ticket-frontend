@@ -44,9 +44,9 @@ export const mockSeatMaps: SeatMap[] = [
 
 function generateSeatsForEvent(
   eventId: number,
-  normalCat: string,
+  _normalCat: string,
   normalPrice: number,
-  vipCat: string,
+  _vipCat: string,
   vipPrice: number,
   camaroteCat?: string,
   camarotePrice?: number
@@ -55,7 +55,7 @@ function generateSeatsForEvent(
   const rowLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
   const seatsPerRow = 20
 
-  rowLetters.forEach((row, rowIndex) => {
+  rowLetters.forEach((row) => {
     const seats: Seat[] = []
     for (let i = 1; i <= seatsPerRow; i++) {
       let category: 'normal' | 'vip' | 'camarote' = 'normal'

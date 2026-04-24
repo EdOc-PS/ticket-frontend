@@ -19,7 +19,6 @@ import type { Event } from '../mocks/events'
 import type { Seat } from '../mocks/seats'
 import EventDetailHeader from '../components/layout/EventDetailHeader.vue'
 import Footer from '../components/layout/Footer.vue'
-import Tooltip from '../components/ui/Tooltip.vue'
 
 const route = useRoute()
 const router = useRouter()

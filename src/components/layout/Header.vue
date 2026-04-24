@@ -3,13 +3,11 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   PhMagnifyingGlass,
-  PhBell,
   PhUser,
   PhFilmSlate,
   PhClockCounterClockwise,
   PhHeart,
   PhSignOut,
-  PhCaretRight,
   PhTicket,
 } from '@phosphor-icons/vue'
 import { mockEvents } from '../../mocks/events'

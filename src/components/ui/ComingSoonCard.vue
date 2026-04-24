@@ -3,7 +3,7 @@ interface Movie {
   id: number
   title: string
   genre: string
-  releaseDate: string
+  releaseDate?: string
   poster: string
 }
 

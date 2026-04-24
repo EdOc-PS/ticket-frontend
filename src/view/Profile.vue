@@ -10,12 +10,12 @@ import {
   PhPencilSimple,
   PhEnvelope,
   PhCalendar,
+  PhMapPin,
 } from '@phosphor-icons/vue'
 import { mockUsers } from '../mocks/users'
 import { mockEvents, getEventById } from '../mocks/events'
 import { mockTickets } from '../mocks/tickets'
 import { useAuth } from '../composables/useAuth'
-import Header from '../components/layout/Header.vue'
 import EventDetailHeader from '../components/layout/EventDetailHeader.vue'
 import Footer from '../components/layout/Footer.vue'
 import LogoutModal from '../components/ui/LogoutModal.vue'

@@ -5,7 +5,7 @@ interface Movie {
   id: number
   title: string
   genre: string
-  rating: number
+  rating: string
   classification: string
   poster: string
 }
