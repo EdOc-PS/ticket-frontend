@@ -17,7 +17,7 @@ import { getEventById } from '../mocks/events'
 import { getSeatMapByEventId } from '../mocks/seats'
 import type { Event } from '../mocks/events'
 import type { Seat } from '../mocks/seats'
-import Header from '../components/layout/Header.vue'
+import EventDetailHeader from '../components/layout/EventDetailHeader.vue'
 import Footer from '../components/layout/Footer.vue'
 
 const route = useRoute()
@@ -97,6 +97,11 @@ const eventStatus = computed(() => {
 
 const isAvailable = computed(() => eventStatus.value !== 'past')
 
+// Comentário do usuário
+const userRating = ref(5)
+const userComment = ref('')
+const showCommentForm = ref(false)
+
 function prevSlide() {
   currentSlide.value = (currentSlide.value - 1 + slides.value.length) % slides.value.length
 }
@@ -109,6 +114,23 @@ function prevCommentSlide() {
 }
 function nextCommentSlide() {
   currentCommentSlide.value = (currentCommentSlide.value + 1) % comments.value.length
+}
+
+function submitComment() {
+  if (!userComment.value.trim()) return
+
+  const newComment = {
+    id: Math.max(...comments.value.map(c => c.id), 0) + 1,
+    author: 'Você',
+    rating: userRating.value,
+    text: userComment.value,
+    date: 'Agora'
+  }
+
+  comments.value.unshift(newComment)
+  userComment.value = ''
+  userRating.value = 5
+  showCommentForm.value = false
 }
 
 const formattedDate = computed(() => {
@@ -200,8 +222,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f5f5f7]">
-    <Header />
+  <div class="min-h-screen bg-[#f5f5f7] transition-all duration-500">
+    <EventDetailHeader />
 
     <div v-if="event" class="pt-20">
 
@@ -504,6 +526,74 @@ onMounted(() => {
       </section>
 
     </div>
+
+    <!-- Formulário para escrever comentário -->
+    <section v-if="event && eventStatus !== 'coming-soon'" class="max-w-5xl mx-auto px-6 mb-16">
+      <div class="bg-white rounded-2xl border border-neutral-100 shadow-sm p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="font-heading text-xl font-bold text-neutral-900">Compartilhe sua avaliação</h2>
+          <button
+            v-if="showCommentForm"
+            @click="showCommentForm = false"
+            class="text-xs text-neutral-500 hover:text-neutral-700 transition-colors"
+          >
+            Cancelar
+          </button>
+        </div>
+
+        <div v-if="!showCommentForm" class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-neutral-200 flex items-center justify-center flex-shrink-0">
+            <PhUser weight="duotone" :size="18" class="text-neutral-500" />
+          </div>
+          <button
+            @click="showCommentForm = true"
+            class="flex-1 text-left px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 text-neutral-500 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-sm"
+          >
+            O que você achou deste filme?
+          </button>
+        </div>
+
+        <div v-if="showCommentForm" class="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+          <!-- Rating -->
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-medium text-neutral-600">Sua avaliação:</span>
+            <div class="flex items-center gap-1">
+              <button
+                v-for="i in 5"
+                :key="i"
+                @click="userRating = i"
+                class="transition-transform duration-150 hover:scale-110"
+              >
+                <PhStar
+                  weight="duotone"
+                  :class="i <= userRating ? 'text-yellow-400' : 'text-neutral-300'"
+                  :size="20"
+                />
+              </button>
+            </div>
+          </div>
+
+          <!-- Textarea -->
+          <textarea
+            v-model="userComment"
+            placeholder="Compartilhe sua experiência com este filme..."
+            class="w-full px-4 py-3 rounded-xl border border-neutral-200 bg-white text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all duration-200 resize-none"
+            rows="4"
+          />
+
+          <!-- Botão Enviar -->
+          <div class="flex justify-end">
+            <button
+              @click="submitComment"
+              :disabled="!userComment.trim()"
+              class="px-6 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-neutral-300 disabled:cursor-not-allowed text-white font-semibold text-sm rounded-xl transition-all duration-200 active:scale-[0.98]"
+            >
+              Publicar avaliação
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Avaliações e comentários -->
     <section v-if="event && eventStatus !== 'coming-soon'" class="max-w-5xl mx-auto px-6 mb-16">

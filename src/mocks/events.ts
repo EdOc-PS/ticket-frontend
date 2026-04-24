@@ -117,6 +117,70 @@ export const mockEvents: Event[] = [
       { id: 'vip', name: 'VIP', price: 70, available: 0 }
     ],
     totalSeats: 180
+  },
+  {
+    id: 7,
+    title: 'Código Vermelho',
+    description: 'Um thriller tenso e emocionante que mantém o espectador na beira do assento do início ao fim.',
+    date: new Date('2026-05-15'),
+    time: '19:00',
+    location: 'Cineplex - Sala 2',
+    duration: '2h 02min',
+    classification: '14',
+    poster: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&q=80',
+    categories: [
+      { id: 'normal', name: 'Normal', price: 52, available: 200 },
+      { id: 'vip', name: 'VIP', price: 82, available: 50 }
+    ],
+    totalSeats: 250
+  },
+  {
+    id: 8,
+    title: 'Lua de Mel',
+    description: 'Uma comédia romântica hilariante sobre casais e suas aventuras inesperadas.',
+    date: new Date('2026-05-22'),
+    time: '20:30',
+    location: 'Cineplex - Sala 1',
+    duration: '1h 38min',
+    classification: '12',
+    poster: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&q=80',
+    categories: [
+      { id: 'normal', name: 'Normal', price: 45, available: 180 },
+      { id: 'vip', name: 'VIP', price: 75, available: 45 }
+    ],
+    totalSeats: 225
+  },
+  {
+    id: 9,
+    title: 'Raízes',
+    description: 'Um documentário premiado que explora as conexões profundas entre as gerações e a natureza. Festival de Cannes 2026.',
+    date: new Date('2026-04-30'),
+    time: '21:00',
+    location: 'Cineplex - Sala Premium',
+    duration: '1h 32min',
+    classification: 'L',
+    poster: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80',
+    categories: [
+      { id: 'normal', name: 'Normal', price: 60, available: 120 },
+      { id: 'vip', name: 'VIP', price: 100, available: 30 }
+    ],
+    totalSeats: 150
+  },
+  {
+    id: 10,
+    title: 'Silêncio Branco',
+    description: 'Um drama intenso e contemplativo que foi aclamado pela crítica. Premiado em Sundance Film Festival 2026.',
+    date: new Date('2026-05-08'),
+    time: '19:30',
+    location: 'Cineplex - Sala Premium',
+    duration: '1h 58min',
+    classification: '12',
+    poster: 'https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=400&q=80',
+    categories: [
+      { id: 'normal', name: 'Normal', price: 60, available: 140 },
+      { id: 'vip', name: 'VIP', price: 100, available: 35 }
+    ],
+    totalSeats: 175
   }
 ]
 

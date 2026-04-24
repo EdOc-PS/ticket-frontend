@@ -1,7 +1,7 @@
 # Sprint — Plataforma de Venda de Ingressos
 
 **Data de entrega:** 04/05/2026  
-**Status:** Fases 1 e 2 completas ✅
+**Status:** Fases 1-4 + 5 parcialmente completas ✅
 
 ---
 
