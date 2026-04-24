@@ -1,11 +1,23 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import {
   PhFilmSlate,
   PhInstagramLogo,
   PhTwitterLogo,
   PhYoutubeLogo,
   PhFacebookLogo,
+  PhCaretDown,
 } from '@phosphor-icons/vue'
+
+const faqs = [
+  { q: 'Como compro ingressos?', a: 'Selecione um filme, escolha a categoria de ingresso, selecione seus assentos e realize o pagamento. Seus ingressos aparecem no perfil!' },
+  { q: 'Posso trocar meu ingresso?', a: 'Entre em contato com nosso suporte. Trocas são permitidas se houver sessões disponíveis.' },
+  { q: 'Quais são os métodos de pagamento?', a: 'Aceitamos PIX, Cartão de Crédito/Débito e Boleto. Todos os pagamentos são seguros e criptografados.' },
+  { q: 'Meu ingresso é digital?', a: 'Sim! Você recebe um QR-Code que pode usar diretamente no seu celular no cinema.' },
+  { q: 'Posso compartilhar meu ingresso?', a: 'Sim, você pode compartilhar seu ingresso digital através de qualquer aplicativo de mensagem.' },
+]
+
+const openFaq = ref<number | null>(null)
 </script>
 
 <template>
@@ -17,7 +29,7 @@ import {
             <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
               <PhFilmSlate weight="duotone" class="text-white" :size="18" />
             </div>
-            <span class="font-heading font-bold text-white text-lg">CineTicket</span>
+            <span class="font-heading font-bold text-white text-lg">Cinematica</span>
           </div>
           <p class="text-neutral-400 text-sm leading-relaxed">
             A melhor plataforma para comprar ingressos de cinema com comodidade e segurança.
@@ -69,10 +81,57 @@ import {
         </div>
       </div>
 
+      <!-- FAQ Section -->
+      <div class="border-t border-neutral-800 pt-12 mb-12">
+        <h3 class="font-heading font-bold text-xl text-white mb-6">Perguntas Frequentes</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <button
+            v-for="(faq, index) in faqs"
+            :key="index"
+            @click="openFaq = openFaq === index ? null : index"
+            class="text-left bg-neutral-900 rounded-lg p-4 hover:bg-neutral-800 transition-colors duration-200"
+          >
+            <div class="flex items-center justify-between gap-3">
+              <p class="text-sm font-semibold text-white">{{ faq.q }}</p>
+              <PhCaretDown
+                weight="bold"
+                :size="16"
+                class="text-neutral-400 flex-shrink-0 transition-transform duration-200"
+                :style="{ transform: openFaq === index ? 'rotate(180deg)' : 'rotate(0deg)' }"
+              />
+            </div>
+            <Transition name="faq">
+              <p v-if="openFaq === index" class="text-xs text-neutral-400 mt-3 leading-relaxed">
+                {{ faq.a }}
+              </p>
+            </Transition>
+          </button>
+        </div>
+      </div>
+
       <div class="border-t border-neutral-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="text-neutral-500 text-sm">© 2026 CineTicket. Todos os direitos reservados.</p>
+        <p class="text-neutral-500 text-sm">© 2026 Cinematica. Todos os direitos reservados.</p>
         <p class="text-neutral-600 text-xs">Feito com ❤️ para os amantes de cinema</p>
       </div>
     </div>
   </footer>
 </template>
+
+<style scoped>
+.faq-enter-active,
+.faq-leave-active {
+  transition: opacity 0.2s ease, max-height 0.2s ease;
+}
+
+.faq-enter-from,
+.faq-leave-to {
+  opacity: 0;
+  max-height: 0;
+}
+
+.faq-enter-to,
+.faq-leave-from {
+  opacity: 1;
+  max-height: 500px;
+}
+</style>

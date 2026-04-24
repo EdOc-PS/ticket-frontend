@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import {
   PhUser,
   PhHeart,
@@ -23,9 +23,18 @@ import Input from '../components/ui/Input.vue'
 import FavoriteCard from '../components/ui/FavoriteCard.vue'
 import ReviewCard from '../components/ui/ReviewCard.vue'
 import HistoryCard from '../components/ui/HistoryCard.vue'
+import TicketModal from '../components/ui/TicketModal.vue'
 
 const router = useRouter()
+const route = useRoute()
 const { logout } = useAuth()
+
+onMounted(() => {
+  const queryTab = route.query.tab as Tab
+  if (queryTab && tabs.some(t => t.id === queryTab)) {
+    activeTab.value = queryTab
+  }
+})
 
 // Mock do usuário logado
 const user = mockUsers[0]
@@ -56,6 +65,16 @@ const purchaseHistory = mockTickets.map(ticket => ({
   event: getEventById(ticket.eventId),
 }))
 
+
+// Ticket modal
+const showTicketModal = ref(false)
+const selectedTicket = ref<typeof purchaseHistory[0] | null>(null)
+
+function openTicketModal(item: typeof purchaseHistory[0]) {
+  selectedTicket.value = item
+  showTicketModal.value = true
+}
+
 // Logout modal
 const showLogoutModal = ref(false)
 
@@ -75,17 +94,17 @@ function formatDate(date: Date) {
   <div class="min-h-screen bg-[#f5f5f7]">
     <EventDetailHeader />
 
-    <div class="max-w-5xl mx-auto px-6 pt-28 pb-20">
+    <div class="max-w-5xl mx-auto px-4 md:px-6 pt-24 md:pt-28 pb-16 md:pb-20">
 
       <!-- Profile header card -->
-      <div class="bg-white rounded-3xl border border-neutral-100 overflow-hidden mb-6">
+      <div class="bg-white rounded-2xl md:rounded-3xl border border-neutral-100 overflow-hidden mb-6">
         <!-- Cover -->
-        <div class="h-28 relative" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #06b6d4 100%);">
+        <div class="h-24 md:h-28 relative" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #06b6d4 100%);">
           <div class="absolute inset-0 opacity-20"
             style="background-image: radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px); background-size: 40px 40px;" />
         </div>
 
-        <div class="px-8 pb-6">
+        <div class="px-4 md:px-8 pb-4 md:pb-6">
           <!-- Avatar + actions -->
           <div class="flex items-end justify-between -mt-10 mb-4">
             <div class="relative">
@@ -97,10 +116,10 @@ function formatDate(date: Date) {
 
           <!-- Name & info -->
           <div>
-            <h1 class="font-heading font-bold text-xl text-neutral-900">{{ user.name }}</h1>
-            <p class="text-neutral-500 text-sm mt-0.5 flex items-center gap-1.5">
-              <PhEnvelope weight="duotone" :size="13" />
-              {{ user.email }}
+            <h1 class="font-heading font-bold text-lg md:text-xl text-neutral-900">{{ user.name }}</h1>
+            <p class="text-neutral-500 text-xs md:text-sm mt-0.5 flex items-center gap-1.5">
+              <PhEnvelope weight="duotone" :size="12" />
+              <span class="truncate">{{ user.email }}</span>
             </p>
             <p class="text-neutral-400 text-xs mt-1 flex items-center gap-1.5">
               <PhCalendar weight="duotone" :size="12" />
@@ -109,50 +128,50 @@ function formatDate(date: Date) {
           </div>
 
           <!-- Stats -->
-          <div class="flex items-center gap-6 mt-5 pt-5 border-t border-neutral-100">
-            <div class="text-center">
-              <p class="font-heading font-bold text-lg text-neutral-900">{{ purchaseHistory.length }}</p>
+          <div class="flex items-center gap-3 md:gap-6 mt-4 md:mt-5 pt-4 md:pt-5 border-t border-neutral-100">
+            <div class="text-center flex-1">
+              <p class="font-heading font-bold text-base md:text-lg text-neutral-900">{{ purchaseHistory.length }}</p>
               <p class="text-xs text-neutral-500">Ingressos</p>
             </div>
-            <div class="w-px h-8 bg-neutral-100" />
-            <div class="text-center">
-              <p class="font-heading font-bold text-lg text-neutral-900">{{ favorites.length }}</p>
+            <div class="w-px h-6 md:h-8 bg-neutral-100" />
+            <div class="text-center flex-1">
+              <p class="font-heading font-bold text-base md:text-lg text-neutral-900">{{ favorites.length }}</p>
               <p class="text-xs text-neutral-500">Favoritos</p>
             </div>
-            <div class="w-px h-8 bg-neutral-100" />
-            <div class="text-center">
-              <p class="font-heading font-bold text-lg text-neutral-900">{{ reviews.length }}</p>
+            <div class="w-px h-6 md:h-8 bg-neutral-100" />
+            <div class="text-center flex-1">
+              <p class="font-heading font-bold text-base md:text-lg text-neutral-900">{{ reviews.length }}</p>
               <p class="text-xs text-neutral-500">Avaliações</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="flex gap-6 items-start">
+      <div class="flex flex-col lg:flex-row lg:gap-6 items-start">
 
         <!-- Main content -->
         <div class="flex-1 min-w-0">
           <!-- Tabs -->
-          <div class="flex gap-1 bg-white rounded-3xl p-1.5 border border-neutral-100 mb-6">
+          <div class="flex gap-0.5 md:gap-1 bg-white rounded-2xl md:rounded-3xl p-1 md:p-1.5 border border-neutral-100 mb-6 overflow-x-auto">
             <button
               v-for="tab in tabs"
               :key="tab.id"
               @click="activeTab = tab.id"
-              class="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-full text-sm font-medium transition-all duration-200"
+              class="flex-1 flex items-center justify-center gap-1 md:gap-1.5 py-2 px-1.5 md:px-3 rounded-lg md:rounded-full text-xs md:text-sm font-medium transition-all duration-200 min-h-[44px] whitespace-nowrap"
               :class="activeTab === tab.id
-                ? 'bg-blue-500 text-white shadow-sm'
+                ? 'bg-blue-500 text-white'
                 : 'text-neutral-500 hover:text-neutral-700 hover:bg-neutral-50'"
             >
-              <component :is="tab.icon" weight="duotone" :size="15" />
+              <component :is="tab.icon" weight="duotone" :size="14" />
               <span class="hidden sm:inline">{{ tab.label }}</span>
             </button>
           </div>
 
           <!-- Tab: Meus Dados -->
-          <div v-if="activeTab === 'dados'" class="bg-white rounded-3xl border border-neutral-100 p-6 space-y-6">
+          <div v-if="activeTab === 'dados'" class="bg-white rounded-2xl md:rounded-3xl border border-neutral-100 p-4 md:p-6 space-y-4 md:space-y-6">
             <h2 class="font-heading font-bold text-base text-neutral-900">Informações pessoais</h2>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-x-6 md:gap-y-5">
               <Input
                 label="NOME COMPLETO"
                 :model-value="user.name"
@@ -180,7 +199,7 @@ function formatDate(date: Date) {
             </div>
 
             <div class="pt-2">
-              <button class="flex items-center gap-2 px-5 py-2.5 bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold rounded-xl transition-all duration-200 active:scale-[0.98]">
+              <button class="flex items-center gap-2 px-4 md:px-5 py-2.5 md:py-3 bg-blue-500 hover:bg-blue-600 text-white text-xs md:text-sm font-semibold rounded-lg md:rounded-xl transition-all duration-200 active:scale-[0.98] min-h-[44px]">
                 <PhPencilSimple weight="duotone" :size="15" />
                 Editar informações
               </button>
@@ -223,6 +242,7 @@ function formatDate(date: Date) {
               v-for="item in purchaseHistory"
               :key="item.id"
               :ticket="item"
+              @view-ticket="openTicketModal(item)"
             />
 
             <div v-if="purchaseHistory.length === 0" class="bg-white rounded-3xl border border-neutral-100 p-12 text-center">
@@ -233,17 +253,17 @@ function formatDate(date: Date) {
         </div>
 
         <!-- Sidebar -->
-        <div class="w-64 flex-shrink-0 space-y-3">
+        <div class="w-full lg:w-64 flex-shrink-0 space-y-3 mt-6 lg:mt-0">
           <!-- Quick info -->
-          <div class="bg-white rounded-3xl border border-neutral-100 p-5">
-            <h3 class="text-xs font-semibold uppercase tracking-widest text-neutral-400 mb-4">Conta</h3>
-            <div class="space-y-3">
-              <div class="flex items-center gap-2.5 text-sm text-neutral-600">
-                <PhEnvelope weight="duotone" :size="15" class="text-blue-400 flex-shrink-0" />
+          <div class="bg-white rounded-2xl md:rounded-3xl border border-neutral-100 p-4 md:p-5">
+            <h3 class="text-xs font-semibold uppercase tracking-widest text-neutral-400 mb-3 md:mb-4">Conta</h3>
+            <div class="space-y-2 md:space-y-3">
+              <div class="flex items-center gap-2 md:gap-2.5 text-sm text-neutral-600">
+                <PhEnvelope weight="duotone" :size="14" class="text-blue-400 flex-shrink-0" />
                 <span class="truncate text-xs">{{ user.email }}</span>
               </div>
-              <div class="flex items-center gap-2.5 text-sm text-neutral-600">
-                <PhCalendar weight="duotone" :size="15" class="text-blue-400 flex-shrink-0" />
+              <div class="flex items-center gap-2 md:gap-2.5 text-sm text-neutral-600">
+                <PhCalendar weight="duotone" :size="14" class="text-blue-400 flex-shrink-0" />
                 <span class="text-xs">{{ formatDate(user.createdAt) }}</span>
               </div>
             </div>
@@ -252,14 +272,14 @@ function formatDate(date: Date) {
           <!-- Logout card -->
           <button
             @click="showLogoutModal = true"
-            class="cursor-pointer w-full bg-white rounded-3xl border border-neutral-100 p-5 flex items-center gap-3 hover:border-red-200 hover:bg-red-50/50 transition-all duration-200 group text-left"
+            class="cursor-pointer w-full bg-white rounded-2xl md:rounded-3xl border border-neutral-100 p-3 md:p-5 flex items-center gap-2 md:gap-3 hover:border-red-200 hover:bg-red-50/50 transition-all duration-200 group text-left min-h-[44px]"
           >
-            <div class="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0 group-hover:bg-red-100 transition-colors">
-              <PhSignOut weight="duotone" class="text-red-400" :size="18" />
+            <div class="w-8 md:w-9 h-8 md:h-9 rounded-lg md:rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0 group-hover:bg-red-100 transition-colors">
+              <PhSignOut weight="duotone" class="text-red-400" :size="16" />
             </div>
             <div>
-              <p class="text-sm font-semibold text-neutral-700 group-hover:text-red-600 transition-colors">Sair da conta</p>
-              <p class="text-xs text-neutral-400 mt-0.5">Encerrar sessão</p>
+              <p class="text-xs md:text-sm font-semibold text-neutral-700 group-hover:text-red-600 transition-colors">Sair da conta</p>
+              <p class="text-xs text-neutral-400 mt-0.5 hidden md:block">Encerrar sessão</p>
             </div>
           </button>
         </div>
@@ -274,6 +294,13 @@ function formatDate(date: Date) {
       :open="showLogoutModal"
       @confirm="handleLogout"
       @cancel="showLogoutModal = false"
+    />
+
+    <!-- Ticket Modal -->
+    <TicketModal
+      :open="showTicketModal"
+      :ticket="selectedTicket"
+      @close="showTicketModal = false"
     />
   </div>
 </template>

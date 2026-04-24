@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { PhMapPin, PhHeart } from '@phosphor-icons/vue'
 
 interface Event {
@@ -11,6 +12,8 @@ interface Event {
 
 defineProps<{ event: Event }>()
 defineEmits<{ click: [] }>()
+
+const imageError = ref(false)
 
 const classificationColor: Record<string, string> = {
   L: 'bg-green-500',
@@ -29,10 +32,19 @@ const classificationColor: Record<string, string> = {
   >
     <div class="relative w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-neutral-100">
       <img
+        v-if="!imageError"
         :src="event.poster"
         :alt="event.title"
+        @error="imageError = true"
         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
       />
+      <div
+        v-else
+        class="w-full h-full flex items-center justify-center text-white text-lg font-bold"
+        :style="{ background: `hsl(${(event.id * 53) % 360}, 60%, 55%)` }"
+      >
+        {{ event.title[0] }}
+      </div>
     </div>
     <div class="flex-1 min-w-0">
       <div class="flex items-center gap-2 mb-0.5">

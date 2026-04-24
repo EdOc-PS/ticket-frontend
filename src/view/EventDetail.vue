@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   PhCaretLeft,
@@ -19,6 +19,7 @@ import type { Event } from '../mocks/events'
 import type { Seat } from '../mocks/seats'
 import EventDetailHeader from '../components/layout/EventDetailHeader.vue'
 import Footer from '../components/layout/Footer.vue'
+import Tooltip from '../components/ui/Tooltip.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -212,6 +213,13 @@ function proceedToCheckout() {
   })
 }
 
+function handleKeyDown(e: KeyboardEvent) {
+  if (e.key === 'Escape') {
+    showSeatMap.value = false
+    showCommentForm.value = false
+  }
+}
+
 onMounted(() => {
   const id = Number(route.params.id)
   event.value = getEventById(id) ?? null
@@ -219,6 +227,11 @@ onMounted(() => {
     seatMapData.value = getSeatMapByEventId(id)
     selectedCategory.value = event.value.categories[0]?.id ?? ''
   }
+  document.addEventListener('keydown', handleKeyDown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeyDown)
 })
 </script>
 
@@ -415,57 +428,57 @@ onMounted(() => {
         <div class="bg-white rounded-2xl border border-neutral-100 shadow-sm overflow-hidden">
 
           <!-- Topo do mapa -->
-          <div class="px-8 py-6 border-b border-neutral-100">
-            <h2 class="font-heading text-xl font-bold text-neutral-900">Escolha seus assentos</h2>
-            <p class="text-sm text-neutral-500 mt-1">Selecione a categoria e depois clique nos assentos desejados</p>
+          <div class="px-4 md:px-8 py-4 md:py-6 border-b border-neutral-100">
+            <h2 class="font-heading text-lg md:text-xl font-bold text-neutral-900">Escolha seus assentos</h2>
+            <p class="text-xs md:text-sm text-neutral-500 mt-1">Selecione a categoria e depois clique nos assentos desejados</p>
           </div>
 
           <!-- Seleção de categoria -->
-          <div class="px-8 py-5 border-b border-neutral-100 flex flex-wrap gap-3">
+          <div class="px-4 md:px-8 py-3 md:py-5 border-b border-neutral-100 flex flex-wrap gap-2 md:gap-3">
             <button
               v-for="cat in event.categories"
               :key="cat.id"
               @click="selectCategory(cat.id)"
-              class="flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-medium transition-all duration-200"
+              class="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 rounded-lg md:rounded-xl border text-xs md:text-sm font-medium transition-all duration-200 min-h-[44px]"
               :class="selectedCategory === cat.id
                 ? 'bg-blue-500 border-blue-500 text-white'
                 : 'bg-white border-neutral-200 text-neutral-600 hover:border-blue-300'"
             >
               <span
-                class="w-2.5 h-2.5 rounded-full"
+                class="w-2.5 h-2.5 rounded-full flex-shrink-0"
                 :class="cat.id === 'normal' ? 'bg-neutral-400' : cat.id === 'vip' ? 'bg-blue-300' : 'bg-yellow-400'"
                 :style="selectedCategory === cat.id ? 'background:white' : ''"
               />
-              {{ cat.name }} — R$ {{ cat.price }}
-              <span class="text-xs opacity-70">({{ cat.available }} disp.)</span>
+              <span class="whitespace-nowrap">{{ cat.name }} — R$ {{ cat.price }}</span>
+              <span class="text-xs opacity-70 hidden md:inline">({{ cat.available }} disp.)</span>
             </button>
           </div>
 
           <!-- Tela do cinema -->
-          <div class="px-8 pt-8">
-            <div class="relative flex justify-center mb-8">
+          <div class="px-4 md:px-8 pt-6 md:pt-8">
+            <div class="relative flex justify-center mb-6 md:mb-8">
               <div class="w-2/3 h-2 rounded-full bg-linear-to-r from-transparent via-neutral-300 to-transparent" />
               <span class="absolute -bottom-5 text-xs text-neutral-400 tracking-widest uppercase">Tela</span>
             </div>
           </div>
 
           <!-- Grade de assentos -->
-          <div class="px-8 pb-8 overflow-x-auto">
+          <div class="px-3 md:px-8 pb-6 md:pb-8 overflow-x-auto">
             <div class="inline-block min-w-full">
               <div
                 v-for="row in seatMapData.rows"
                 :key="row.row"
-                class="flex items-center gap-1.5 mb-1.5"
+                class="flex items-center gap-1 md:gap-1.5 mb-1 md:mb-1.5"
               >
-                <span class="w-5 text-xs font-mono text-neutral-400 text-center shrink-0">{{ row.row }}</span>
-                <div class="flex gap-1.5">
+                <span class="w-4 md:w-5 text-xs font-mono text-neutral-400 text-center shrink-0">{{ row.row }}</span>
+                <div class="flex gap-1 md:gap-1.5">
                   <button
                     v-for="seat in row.seats"
                     :key="seat.seatNumber"
                     @click="toggleSeat(seat)"
                     :disabled="seat.status === 'occupied'"
                     :title="seat.status === 'occupied' ? 'Ocupado' : seat.seatNumber"
-                    class="w-7 h-7 rounded-md border text-[10px] font-mono transition-all duration-150"
+                    class="w-7 h-7 md:w-8 md:h-8 rounded-md border text-[10px] font-mono transition-all duration-150 flex items-center justify-center hover:scale-110"
                     :class="getSeatClass(seat)"
                   >
                     <span v-if="selectedSeats.includes(seat.seatNumber)">✓</span>
@@ -476,36 +489,36 @@ onMounted(() => {
           </div>
 
           <!-- Legenda + resumo -->
-          <div class="px-8 py-6 border-t border-neutral-100 bg-neutral-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div class="flex items-center gap-5 flex-wrap text-xs text-neutral-500">
-              <span class="flex items-center gap-1.5">
-                <span class="w-5 h-5 rounded-md bg-white border border-neutral-300 inline-block" />
-                Disponível
+          <div class="px-4 md:px-8 py-4 md:py-6 border-t border-neutral-100 bg-neutral-50 flex flex-col gap-4">
+            <div class="flex items-center gap-3 md:gap-5 flex-wrap text-xs text-neutral-500">
+              <span class="flex items-center gap-1">
+                <span class="w-4 h-4 md:w-5 md:h-5 rounded-md bg-white border border-neutral-300 inline-block" />
+                <span class="hidden md:inline">Disponível</span>
               </span>
-              <span class="flex items-center gap-1.5">
-                <span class="w-5 h-5 rounded-md bg-blue-500 inline-block" />
-                Selecionado
+              <span class="flex items-center gap-1">
+                <span class="w-4 h-4 md:w-5 md:h-5 rounded-md bg-blue-500 inline-block" />
+                <span class="hidden md:inline">Selecionado</span>
               </span>
-              <span class="flex items-center gap-1.5">
-                <span class="w-5 h-5 rounded-md bg-neutral-200 inline-block" />
-                Ocupado
+              <span class="flex items-center gap-1">
+                <span class="w-4 h-4 md:w-5 md:h-5 rounded-md bg-neutral-200 inline-block" />
+                <span class="hidden md:inline">Ocupado</span>
               </span>
             </div>
 
-            <div class="flex items-center gap-4">
-              <div class="text-right">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-4">
+              <div class="text-left md:text-right w-full md:w-auto">
                 <p class="text-xs text-neutral-500">
                   {{ selectedSeats.length }} assento(s) · {{ event.categories.find(c => c.id === selectedCategory)?.name }}
                 </p>
-                <p class="font-heading font-bold text-lg text-neutral-900">R$ {{ totalPrice.toFixed(2) }}</p>
+                <p class="font-heading font-bold text-base md:text-lg text-neutral-900">R$ {{ totalPrice.toFixed(2) }}</p>
               </div>
               <button
                 @click="proceedToCheckout"
                 :disabled="selectedSeats.length === 0"
-                class="px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-sm rounded-xl transition-all duration-200 active:scale-[0.98] flex items-center gap-2"
+                class="w-full md:w-auto px-4 md:px-6 py-3 md:py-3 bg-blue-500 hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-sm md:text-base rounded-lg md:rounded-xl transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 min-h-[44px]"
               >
                 <PhTicket weight="duotone" :size="16" />
-                Continuar
+                <span>Continuar</span>
               </button>
             </div>
           </div>
@@ -582,7 +595,8 @@ onMounted(() => {
           <!-- Textarea -->
           <textarea
             v-model="userComment"
-            placeholder="Compartilhe sua experiência com este filme..."
+            @keydown.ctrl.enter="submitComment"
+            placeholder="Compartilhe sua experiência com este filme... (Ctrl+Enter para enviar)"
             class="w-full px-4 py-3 rounded-xl border border-neutral-200 bg-white text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all duration-200 resize-none"
             rows="4"
           />

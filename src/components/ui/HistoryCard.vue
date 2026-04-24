@@ -20,6 +20,10 @@ const props = defineProps<{
   ticket: Ticket
 }>()
 
+const emit = defineEmits<{
+  viewTicket: [ticket: Ticket]
+}>()
+
 function formatDate(date: Date) {
   return new Date(date).toLocaleDateString('pt-BR', {
     day: '2-digit',
@@ -71,7 +75,10 @@ function formatDate(date: Date) {
     </div>
     <div class="mt-4 pt-4 border-t border-neutral-100 flex items-center justify-between">
       <span class="text-xs text-neutral-400 font-mono">{{ ticket.id }}</span>
-      <button class="text-xs text-blue-500 font-medium hover:text-blue-600 transition-colors flex items-center gap-1">
+      <button
+        @click="emit('viewTicket', ticket)"
+        class="text-xs cursor-pointer text-blue-500 font-medium hover:text-blue-600 transition-colors flex items-center gap-1"
+      >
         <PhTicket weight="duotone" :size="12" />
         Ver ingresso
       </button>

@@ -5,6 +5,7 @@ import Home from '../view/Home.vue'
 import Register from '../view/auth/Register.vue'
 import Login from '../view/auth/Login.vue'
 import EventDetail from '../view/EventDetail.vue'
+import Checkout from '../view/Checkout.vue'
 import Profile from '../view/Profile.vue'
 
 const routes = [
@@ -22,6 +23,12 @@ const routes = [
     path: '/event/:id',
     name: 'EventDetail',
     component: EventDetail,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/checkout',
+    name: 'Checkout',
+    component: Checkout,
     meta: { requiresAuth: true }
   },
   {

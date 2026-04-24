@@ -10,32 +10,43 @@ import {
   PhClockCounterClockwise,
   PhHeart,
   PhSignOut,
+  PhTicket,
 } from '@phosphor-icons/vue'
 import { mockEvents } from '../../mocks/events'
 import { useAuth } from '../../composables/useAuth'
 import LogoutModal from '../ui/LogoutModal.vue'
+import NotificationDropdown from '../ui/NotificationDropdown.vue'
 
 const router = useRouter()
 const { logout } = useAuth()
 
-// --- Logout ---
+// --- Refs (Top-level) ---
 const showLogoutModal = ref(false)
+const showSearch = ref(false)
+const showNotifications = ref(false)
+const showProfile = ref(false)
+const searchQuery = ref('')
+const searchInputRef = ref<HTMLInputElement | null>(null)
+const imageErrors = ref<Record<number, boolean>>({})
+
+// --- Data & Mocks ---
+const searchHistory = [mockEvents[0]]
+const notifications = [
+  { id: 1, title: 'Ingresso Confirmado', message: 'Seu ingresso para "Mundos Além" está disponível.', time: '2 min', icon: PhTicket, color: 'text-blue-500', bg: 'bg-blue-50' },
+  { id: 2, title: 'Sessão Próxima', message: 'Faltam 30 minutos para sua sessão de "A Última Dança".', time: '1h', icon: PhClockCounterClockwise, color: 'text-amber-500', bg: 'bg-amber-50' },
+]
+
+// --- Functions ---
 function handleLogout() {
   logout()
   router.push('/auth/login')
 }
 
-// --- Search ---
-const showSearch = ref(false)
-const searchQuery = ref('')
-const searchInputRef = ref<HTMLInputElement | null>(null)
-const searchHistory = [mockEvents[0]]
-const imageErrors = ref<Record<number, boolean>>({})
-
 function toggleSearch() {
   showSearch.value = !showSearch.value
   if (showSearch.value) {
     showProfile.value = false
+    showNotifications.value = false
     setTimeout(() => searchInputRef.value?.focus(), 50)
   } else {
     searchQuery.value = ''
@@ -45,15 +56,23 @@ function toggleSearch() {
 function goToEvent(id: number) {
   showSearch.value = false
   searchQuery.value = ''
-  router.push(`/evento/${id}`)
+  router.push(`/event/${id}`)
 }
-
-// --- Profile ---
-const showProfile = ref(false)
 
 function toggleProfile() {
   showProfile.value = !showProfile.value
-  if (showProfile.value) showSearch.value = false
+  if (showProfile.value) {
+    showSearch.value = false
+    showNotifications.value = false
+  }
+}
+
+function toggleNotifications() {
+  showNotifications.value = !showNotifications.value
+  if (showNotifications.value) {
+    showSearch.value = false
+    showProfile.value = false
+  }
 }
 
 // Fechar ao clicar fora
@@ -62,6 +81,7 @@ function handleClickOutside(e: MouseEvent) {
   if (!target.closest('[data-header-dropdown]')) {
     showSearch.value = false
     showProfile.value = false
+    showNotifications.value = false
   }
 }
 
@@ -78,18 +98,21 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
       <!-- Botão Voltar (Esquerda) -->
       <button
         @click="router.back()"
-        class="flex items-center justify-center w-9 h-9 rounded-full text-neutral-600 hover:text-neutral-900 hover:bg-white/60 transition-all duration-200"
+        class="flex cursor-pointer items-center justify-center w-9 h-9 rounded-full text-neutral-600 hover:text-neutral-900 hover:bg-white/60 transition-all duration-200"
       >
         <PhCaretLeft weight="bold" :size="20" />
       </button>
 
       <!-- Logo (Centro) -->
-      <div class="flex items-center gap-2">
+      <button
+        @click="router.push('/home')"
+        class="flex items-center gap-2 hover:opacity-80 transition-opacity"
+      >
         <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
           <PhFilmSlate weight="duotone" class="text-white" :size="18" />
         </div>
-        <span class="font-heading font-bold text-neutral-900 text-lg tracking-tight">CineTicket</span>
-      </div>
+        <span class="font-heading font-bold text-neutral-900 text-lg tracking-tight">Cinematica</span>
+      </button>
 
       <!-- Actions (Direita) -->
       <div class="flex items-center gap-1">
@@ -151,10 +174,13 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
           </Transition>
         </div>
 
-        <!-- Bell -->
-        <button class="w-9 h-9 flex items-center justify-center rounded-xl text-neutral-700 hover:text-blue-500 hover:bg-blue-50 transition-all duration-200">
-          <PhBell weight="duotone" :size="20" />
-        </button>
+        <!-- Notifications -->
+        <NotificationDropdown
+          :notifications="notifications"
+          :show-notifications="showNotifications"
+          @toggle="toggleNotifications"
+          @update:show-notifications="showNotifications = $event"
+        />
 
         <!-- Profile -->
         <div class="relative" data-header-dropdown>
@@ -173,7 +199,7 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
                   <PhUser weight="duotone" :size="16" class="text-neutral-500" />
                   Ver perfil
                 </button>
-                <button class="profile-item" @click="showProfile = false">
+                <button class="profile-item" @click="router.push('/perfil?tab=favoritos'); showProfile = false">
                   <PhHeart weight="duotone" :size="16" class="text-neutral-500" />
                   Favoritos
                 </button>
