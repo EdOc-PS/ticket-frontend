@@ -90,7 +90,8 @@ const eventStatus = computed(() => {
   if (eventDate < today) return 'past'
 
   const daysUntil = Math.ceil((eventDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
-  if (daysUntil > 7) return 'coming-soon'
+  // Eventos com mais de 45 dias são considerados "Em Breve" (lançamentos futuros)
+  if (daysUntil > 45) return 'coming-soon'
 
   return 'current'
 })
@@ -222,23 +223,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f5f5f7] transition-all duration-500">
+  <div class="min-h-screen bg-[#f5f5f7]">
     <EventDetailHeader />
 
     <div v-if="event" class="pt-20">
-
-      <!-- Header com botão voltar -->
-      <div class="max-w-5xl mx-auto px-6 py-6">
-        <button
-          @click="router.back()"
-          class="flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 transition-colors duration-200 group"
-        >
-          <div class="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center group-hover:border-neutral-400 transition-all duration-200">
-            <PhCaretLeft :size="16" weight="bold" />
-          </div>
-          Voltar
-        </button>
-      </div>
 
       <!-- Alert para eventos não disponíveis -->
       <div v-if="!isAvailable" class="max-w-5xl mx-auto px-6 mb-6">
@@ -527,9 +515,27 @@ onMounted(() => {
 
     </div>
 
+    <!-- Estado de erro: evento não encontrado -->
+    <div v-if="!event" class="flex flex-col items-center justify-center min-h-[70vh] px-6">
+      <div class="text-center max-w-sm">
+        <div class="w-20 h-20 rounded-3xl bg-neutral-100 flex items-center justify-center mx-auto mb-6">
+          <PhFilmSlate weight="duotone" class="text-neutral-300" :size="40" />
+        </div>
+        <h2 class="font-heading font-bold text-2xl text-neutral-900 mb-2">Evento não encontrado</h2>
+        <p class="text-neutral-500 text-sm leading-relaxed mb-8">O evento que você está procurando não existe ou foi removido da programação.</p>
+        <button
+          @click="router.back()"
+          class="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 active:scale-[0.98] text-white font-semibold text-sm rounded-xl transition-all duration-200"
+        >
+          <PhCaretLeft weight="bold" :size="16" />
+          Voltar
+        </button>
+      </div>
+    </div>
+
     <!-- Formulário para escrever comentário -->
-    <section v-if="event && eventStatus !== 'coming-soon'" class="max-w-5xl mx-auto px-6 mb-16">
-      <div class="bg-white rounded-2xl border border-neutral-100 shadow-sm p-6">
+    <section v-if="event && eventStatus !== 'coming-soon' && eventStatus !== 'past'" class="max-w-5xl mx-auto px-6 mb-16">
+      <div class="bg-white rounded-2xl border border-neutral-100 p-6">
         <div class="flex items-center justify-between mb-6">
           <h2 class="font-heading text-xl font-bold text-neutral-900">Compartilhe sua avaliação</h2>
           <button
@@ -596,7 +602,7 @@ onMounted(() => {
     </section>
 
     <!-- Avaliações e comentários -->
-    <section v-if="event && eventStatus !== 'coming-soon'" class="max-w-5xl mx-auto px-6 mb-16">
+    <section v-if="event && eventStatus !== 'coming-soon' && eventStatus !== 'past'" class="max-w-5xl mx-auto px-6 mb-16">
       <div class="flex items-end justify-between mb-8">
         <div>
           <h2 class="font-heading text-2xl font-bold text-neutral-900">Avaliações e comentários</h2>
@@ -653,15 +659,15 @@ onMounted(() => {
         <!-- Controles -->
         <button
           @click="prevCommentSlide"
-          class="absolute -left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 hover:bg-neutral-100"
+          class="arrow-btn absolute -left-5 top-1/2 -translate-y-1/2"
         >
-          <PhCaretLeft weight="bold" class="text-neutral-600" :size="18" />
+          <PhCaretLeft weight="bold" class="text-neutral-600" :size="16" />
         </button>
         <button
           @click="nextCommentSlide"
-          class="absolute -right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 hover:bg-neutral-100"
+          class="arrow-btn absolute -right-5 top-1/2 -translate-y-1/2"
         >
-          <PhCaretRight weight="bold" class="text-neutral-600" :size="18" />
+          <PhCaretRight weight="bold" class="text-neutral-600" :size="16" />
         </button>
 
         <!-- Indicador de posição -->
@@ -677,12 +683,6 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- Estado de erro -->
-    <div v-else class="flex flex-col items-center justify-center min-h-screen gap-4">
-      <p class="text-neutral-500">Evento não encontrado.</p>
-      <button @click="router.back()" class="text-blue-500 text-sm hover:underline">Voltar</button>
-    </div>
-
     <Footer />
   </div>
 </template>
@@ -695,5 +695,23 @@ onMounted(() => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.arrow-btn {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e5e7eb;
+  background: transparent;
+  cursor: pointer;
+  color: #9ca3af;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.arrow-btn:hover {
+  color: #374151;
+  border-color: #9ca3af;
 }
 </style>
