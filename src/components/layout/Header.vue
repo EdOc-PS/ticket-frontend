@@ -12,8 +12,18 @@ import {
   PhCaretRight,
 } from '@phosphor-icons/vue'
 import { mockEvents } from '../../mocks/events'
+import { useAuth } from '../../composables/useAuth'
+import LogoutModal from '../ui/LogoutModal.vue'
 
 const router = useRouter()
+const { logout } = useAuth()
+
+// --- Logout Modal ---
+const showLogoutModal = ref(false)
+function handleLogout() {
+  logout()
+  router.push('/auth/login')
+}
 
 // --- Search ---
 const showSearch = ref(false)
@@ -172,25 +182,16 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
               class="dropdown-panel absolute right-0 top-12 w-52"
             >
               <div class="p-2 space-y-0.5">
-                <button
-                  class="profile-item"
-                  @click="showProfile = false"
-                >
+                <button class="profile-item" @click="router.push('/perfil'); showProfile = false">
                   <PhUser weight="duotone" :size="16" class="text-neutral-500" />
                   Ver perfil
                 </button>
-                <button
-                  class="profile-item"
-                  @click="showProfile = false"
-                >
+                <button class="profile-item" @click="showProfile = false">
                   <PhHeart weight="duotone" :size="16" class="text-neutral-500" />
                   Favoritos
                 </button>
                 <div class="h-px bg-neutral-100 my-1" />
-                <button
-                  class="profile-item text-red-500"
-                  @click="showProfile = false"
-                >
+                <button class="profile-item text-red-500" @click="showProfile = false; showLogoutModal = true">
                   <PhSignOut weight="duotone" :size="16" class="text-red-400" />
                   Sair
                 </button>
@@ -202,6 +203,12 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
       </div>
     </nav>
   </header>
+
+  <LogoutModal
+    :open="showLogoutModal"
+    @confirm="handleLogout"
+    @cancel="showLogoutModal = false"
+  />
 </template>
 
 <style scoped>

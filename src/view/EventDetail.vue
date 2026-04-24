@@ -640,7 +640,7 @@ onMounted(() => {
                     <p class="font-heading font-bold text-neutral-900">{{ comment.author }}</p>
                     <p class="text-xs text-neutral-500 mt-0.5">{{ comment.date }}</p>
                   </div>
-                  <div class="flex items-center gap-0.5">
+                  <div class="flex  items-center gap-0.5">
                     <PhStar
                       v-for="i in 5"
                       :key="i"
@@ -659,13 +659,13 @@ onMounted(() => {
         <!-- Controles -->
         <button
           @click="prevCommentSlide"
-          class="arrow-btn absolute -left-5 top-1/2 -translate-y-1/2"
+          class="arrow-btn absolute -left-5 top-3/7 -translate-y-1/2"
         >
           <PhCaretLeft weight="bold" class="text-neutral-600" :size="16" />
         </button>
         <button
           @click="nextCommentSlide"
-          class="arrow-btn absolute -right-5 top-1/2 -translate-y-1/2"
+          class="arrow-btn absolute -right-5 top-3/7 -translate-y-1/2"
         >
           <PhCaretRight weight="bold" class="text-neutral-600" :size="16" />
         </button>
@@ -703,9 +703,9 @@ onMounted(() => {
   border-radius: 9999px;
   display: flex;
   align-items: center;
+  background-color: #fff;
   justify-content: center;
   border: 1px solid #e5e7eb;
-  background: transparent;
   cursor: pointer;
   color: #9ca3af;
   transition: color 0.15s ease, border-color 0.15s ease;
