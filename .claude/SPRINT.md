@@ -91,11 +91,11 @@
 ### Fase 9: Componentes Auxiliares
 **Objetivo:** Criar componentes necessários para navegação e UX
 
-- [ ] Criar `Header.vue` (navbar com logo, menu, logout)
+- [x] Criar `Header.vue` (navbar com logo, menu, logout)
   - Mostrar usuário logado
   - Link para profile
   - Botão de logout
-- [ ] Atualizar `Footer.vue` se necessário
+- [x] Atualizar `Footer.vue` se necessário
 - [ ] Componente `LoadingSpinner.vue` (para estados de carregamento)
 - [ ] Componente `Modal.vue` (confirmações)
 

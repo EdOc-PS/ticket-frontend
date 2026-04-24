@@ -13,6 +13,9 @@ import {
 import { featuredMovies, nowPlayingMovies, comingSoonMovies, festivalMovies } from '../mocks/movies'
 import Header from '../components/layout/Header.vue'
 import Footer from '../components/layout/Footer.vue'
+import NowPlayingCard from '../components/ui/NowPlayingCard.vue'
+import ComingSoonCard from '../components/ui/ComingSoonCard.vue'
+import FestivalCard from '../components/ui/FestivalCard.vue'
 
 const currentSlide = ref(0)
 const isTransitioning = ref(false)
@@ -169,38 +172,12 @@ const classificationColor: Record<string, string> = {
         </div>
 
         <div class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
-          <div
+          <NowPlayingCard
             v-for="movie in nowPlayingMovies"
             :key="movie.id"
+            :movie="movie"
             @click="goToEvent(movie.id)"
-            class="shrink-0 w-44 snap-start cursor-pointer group"
-          >
-            <div class="relative rounded-xl overflow-hidden mb-3 aspect-2/3 bg-neutral-200">
-              <img
-                :src="movie.poster"
-                :alt="movie.title"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <div class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div class="absolute top-2 left-2">
-                <span
-                  class="px-1.5 py-0.5 rounded text-xs font-bold text-white"
-                  :class="classificationColor[movie.classification] || 'bg-neutral-500'"
-                >{{ movie.classification }}</span>
-              </div>
-              <div class="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                <button class="w-full py-2 bg-blue-500 text-white text-xs font-semibold rounded-lg">
-                  Comprar
-                </button>
-              </div>
-            </div>
-            <h3 class="font-heading font-bold text-sm text-neutral-900 leading-tight truncate">{{ movie.title }}</h3>
-            <p class="text-xs text-neutral-500 mt-0.5">{{ movie.genre }}</p>
-            <div class="flex items-center gap-1 mt-1">
-              <PhStar weight="duotone" class="text-yellow-400" :size="12" />
-              <span class="text-xs text-neutral-600 font-medium">{{ movie.rating }}</span>
-            </div>
-          </div>
+          />
         </div>
       </div>
     </section>
@@ -219,28 +196,12 @@ const classificationColor: Record<string, string> = {
         </div>
 
         <div class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
-          <div
+          <ComingSoonCard
             v-for="movie in comingSoonMovies"
             :key="movie.id"
+            :movie="movie"
             @click="goToEvent(movie.id)"
-            class="shrink-0 w-44 snap-start cursor-pointer group"
-          >
-            <div class="relative rounded-xl overflow-hidden mb-3 aspect-2/3 bg-neutral-200">
-              <img
-                :src="movie.poster"
-                :alt="movie.title"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 saturate-50 group-hover:saturate-100"
-              />
-              <div class="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent"></div>
-              <div class="absolute bottom-3 left-0 right-0 text-center">
-                <span class="text-white text-xs font-bold tracking-wide px-2 py-1 rounded-full" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(8px);">
-                  {{ movie.releaseDate }}
-                </span>
-              </div>
-            </div>
-            <h3 class="font-heading font-bold text-sm text-neutral-900 leading-tight truncate">{{ movie.title }}</h3>
-            <p class="text-xs text-neutral-500 mt-0.5">{{ movie.genre }}</p>
-          </div>
+          />
         </div>
       </div>
     </section>
@@ -326,32 +287,12 @@ const classificationColor: Record<string, string> = {
         </div>
 
         <div class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
-          <div
+          <FestivalCard
             v-for="movie in festivalMovies"
             :key="movie.id"
+            :movie="movie"
             @click="goToEvent(movie.id)"
-            class="shrink-0 w-52 snap-start cursor-pointer group"
-          >
-            <div class="relative rounded-xl overflow-hidden mb-3 aspect-2/3 bg-neutral-200">
-              <img
-                :src="movie.poster"
-                :alt="movie.title"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <div class="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent"></div>
-              <div class="absolute top-2 right-2">
-                <div class="flex items-center gap-1 px-2 py-1 rounded-full" style="background: rgba(234, 179, 8, 0.2); backdrop-filter: blur(8px); border: 1px solid rgba(234,179,8,0.4);">
-                  <PhStar weight="duotone" class="text-yellow-400" :size="12" />
-                  <span class="text-yellow-400 text-xs font-bold">{{ movie.rating }}</span>
-                </div>
-              </div>
-              <div class="absolute bottom-3 left-3 right-3">
-                <span class="text-white/80 text-xs">🏆 {{ movie.festival }}</span>
-              </div>
-            </div>
-            <h3 class="font-heading font-bold text-sm text-neutral-900 leading-tight truncate">{{ movie.title }}</h3>
-            <p class="text-xs text-neutral-500 mt-0.5">{{ movie.genre }}</p>
-          </div>
+          />
         </div>
       </div>
     </section>

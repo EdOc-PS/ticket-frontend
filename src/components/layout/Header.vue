@@ -22,10 +22,12 @@ const searchInputRef = ref<HTMLInputElement | null>(null)
 
 // Mock: histórico com um item (primeiro mock disponível)
 const searchHistory = [mockEvents[0]]
+const imageErrors = ref<Record<number, boolean>>({})
 
 function toggleSearch() {
   showSearch.value = !showSearch.value
   if (showSearch.value) {
+    showProfile.value = false
     setTimeout(() => searchInputRef.value?.focus(), 50)
   } else {
     searchQuery.value = ''
@@ -98,7 +100,7 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
           <Transition name="dropdown">
             <div
               v-if="showSearch"
-              class="dropdown-panel absolute right-0 top-12 w-80"
+              class="dropdown-panel absolute right-0 top-12 w-96"
             >
               <!-- Input -->
               <div class="flex items-center gap-2 px-3 py-2 border-b border-neutral-100">
@@ -127,11 +129,21 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
                     <p class="text-sm text-neutral-800 font-medium truncate">{{ item.title }}</p>
                     <p class="text-xs text-neutral-400 truncate">{{ item.location }}</p>
                   </div>
-                  <img
-                    :src="item.poster"
-                    :alt="item.title"
-                    class="w-8 h-8 rounded-lg object-cover flex-shrink-0 opacity-70 group-hover:opacity-100 transition-opacity"
-                  />
+                  <!-- Thumbnail com fallback -->
+                  <div class="w-10 h-10 rounded-lg flex-shrink-0 overflow-hidden">
+                    <img
+                      v-if="!imageErrors[item.id]"
+                      :src="item.poster"
+                      alt=""
+                      class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                      @error="imageErrors[item.id] = true"
+                    />
+                    <div
+                      v-else
+                      class="w-full h-full flex items-center justify-center text-white text-sm font-bold"
+                      :style="{ background: `hsl(${(item.id * 53) % 360}, 60%, 55%)` }"
+                    >{{ item.title[0] }}</div>
+                  </div>
                 </button>
               </div>
             </div>
