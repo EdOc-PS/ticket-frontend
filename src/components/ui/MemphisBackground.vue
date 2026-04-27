@@ -90,7 +90,7 @@ const shapes = [
       :style="{
         left: item.x + '%',
         top: item.y + '%',
-        transform: `rotate(${item.rotate}deg)`,
+        '--base-rotate': `rotate(${item.rotate}deg)`,
         opacity: item.opacity,
         color: item.color,
         animationDelay: item.delay + 's',
@@ -186,20 +186,26 @@ const shapes = [
 }
 
 @keyframes memphis-float {
-  0%, 100% {
-    transform: var(--base-rotate, rotate(0deg)) translateY(0px);
+  0% {
+    transform: var(--base-rotate, rotate(0deg)) translateY(0px) rotate(0deg);
   }
-  50% {
-    transform: var(--base-rotate, rotate(0deg)) translateY(-8px);
+  33% {
+    transform: var(--base-rotate, rotate(0deg)) translateY(-12px) rotate(5deg);
+  }
+  66% {
+    transform: var(--base-rotate, rotate(0deg)) translateY(5px) rotate(-5deg);
+  }
+  100% {
+    transform: var(--base-rotate, rotate(0deg)) translateY(0px) rotate(0deg);
   }
 }
 
 @keyframes memphis-pulse {
   0%, 100% {
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
   }
   50% {
-    transform: scale(1.15);
+    transform: scale(1.15) rotate(15deg);
   }
 }
 </style>
