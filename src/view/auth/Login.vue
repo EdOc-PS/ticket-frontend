@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { PhEnvelope, PhLockKey } from '@phosphor-icons/vue'
+import { PhEnvelope, PhLockKey, PhFilmSlate } from '@phosphor-icons/vue'
 import { useAuth } from '../../composables/useAuth'
 import Input from '../../components/ui/Input.vue'
 import Button from '../../components/ui/Button.vue'
+import MemphisBackground from '../../components/ui/MemphisBackground.vue'
 
 const router = useRouter()
 const { login, isAuthenticated, getRememberedEmail } = useAuth()
@@ -43,14 +44,16 @@ async function handleLogin() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f5f5f7] flex items-center justify-center p-6">
-    <div class="w-full max-w-sm">
+  <div class="min-h-screen bg-[#f5f5f7] flex items-center justify-center p-6 relative overflow-hidden">
+    <!-- Memphis Background -->
+    <MemphisBackground />
+
+    <!-- Form content -->
+    <div class="w-full max-w-sm relative z-10">
 
       <div class="text-center mb-10">
-        <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-blue-500 mb-6">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+        <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-500 mb-6 shadow-lg shadow-blue-500/25">
+          <PhFilmSlate weight="duotone" class="text-white" :size="28" />
         </div>
         <h1 class="font-heading text-2xl font-bold text-neutral-900 tracking-tight">Bem-vindo</h1>
         <p class="mt-1 text-neutral-500 text-sm">Acesse sua conta para continuar</p>
@@ -58,7 +61,7 @@ async function handleLogin() {
 
       <form
         @submit.prevent="handleLogin"
-        class="rounded-3xl shadow-sm bg-white backdrop-blur-xl p-8  space-y-4"
+        class="rounded-3xl bg-white/80 backdrop-blur-xl p-8 shadow-xl shadow-black/5 border border-white/60 space-y-4"
       >
         <Input
           label="E-mail"

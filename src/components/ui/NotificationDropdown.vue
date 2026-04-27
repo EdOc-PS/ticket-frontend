@@ -42,7 +42,7 @@ function handleToggle() {
 
     <!-- Notifications dropdown -->
     <Transition name="dropdown">
-      <div v-if="showNotifications" class="dropdown-panel absolute right-0 top-12 w-80">
+      <div v-if="showNotifications" class="dropdown-panel fixed left-3 right-3 top-[4.5rem] sm:absolute sm:left-auto sm:right-0 sm:top-12 sm:w-[min(20rem,_calc(100vw-2rem))]">
         <div class="p-3 border-b border-neutral-100 flex items-center justify-between">
           <h3 class="text-xs font-bold uppercase tracking-widest text-neutral-400">Notificações</h3>
           <span class="text-[10px] bg-blue-500 text-white px-1.5 py-0.5 rounded-full font-bold">{{ notifications.length }}</span>

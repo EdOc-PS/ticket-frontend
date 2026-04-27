@@ -130,7 +130,7 @@ onUnmounted(() => document.removeEventListener('mousedown', handleClickOutside))
           <Transition name="dropdown">
             <div
               v-if="showSearch"
-              class="dropdown-panel absolute right-0 top-12 w-96"
+              class="dropdown-panel fixed left-3 right-3 top-[4.5rem] sm:absolute sm:left-auto sm:right-0 sm:top-12 sm:w-[min(24rem,_calc(100vw-2rem))]"
             >
               <!-- Input -->
               <div class="flex items-center gap-2 px-3 py-2 border-b border-neutral-100">

@@ -152,18 +152,18 @@ function formatDate(date: Date) {
         <!-- Main content -->
         <div class="flex-1 min-w-0">
           <!-- Tabs -->
-          <div class="flex gap-0.5 md:gap-1 bg-white rounded-2xl md:rounded-3xl p-1 md:p-1.5 border border-neutral-100 mb-6 overflow-x-auto">
+          <div class="w-full flex gap-1 bg-white rounded-2xl p-1 border border-neutral-100 mb-6">
             <button
               v-for="tab in tabs"
               :key="tab.id"
               @click="activeTab = tab.id"
-              class="flex-1 flex items-center justify-center gap-1 md:gap-1.5 py-2 px-1.5 md:px-3 rounded-lg md:rounded-full text-xs md:text-sm font-medium transition-all duration-200 min-h-[44px] whitespace-nowrap"
+              class="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-2 sm:px-3 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 min-h-[44px]"
               :class="activeTab === tab.id
-                ? 'bg-blue-500 text-white'
+                ? 'bg-blue-500 text-white shadow-sm'
                 : 'text-neutral-500 hover:text-neutral-700 hover:bg-neutral-50'"
             >
-              <component :is="tab.icon" weight="duotone" :size="14" />
-              <span class="hidden sm:inline">{{ tab.label }}</span>
+              <component :is="tab.icon" weight="duotone" :size="18" />
+              <span class="hidden sm:inline leading-tight">{{ tab.label }}</span>
             </button>
           </div>
 
@@ -171,7 +171,7 @@ function formatDate(date: Date) {
           <div v-if="activeTab === 'dados'" class="bg-white rounded-2xl md:rounded-3xl border border-neutral-100 p-4 md:p-6 space-y-4 md:space-y-6">
             <h2 class="font-heading font-bold text-base text-neutral-900">Informações pessoais</h2>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-x-6 md:gap-y-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-x-6 md:gap-y-5">
               <Input
                 label="NOME COMPLETO"
                 :model-value="user.name"
