@@ -97,7 +97,7 @@ function formatDate(date: Date) {
     <div class="max-w-5xl mx-auto px-4 md:px-6 pt-24 md:pt-28 pb-16 md:pb-20">
 
       <!-- Profile header card -->
-      <div class="bg-white rounded-2xl md:rounded-3xl border border-neutral-100 overflow-hidden mb-6 animate-fade-in-up stagger-1">
+      <div class="glass-panel rounded-2xl md:rounded-3xl overflow-hidden mb-6 animate-fade-in-up stagger-1">
         <!-- Cover -->
         <div class="h-24 md:h-28 relative" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #06b6d4 100%);">
           <div class="absolute inset-0 opacity-20"
@@ -152,7 +152,7 @@ function formatDate(date: Date) {
         <!-- Main content -->
         <div class="flex-1 min-w-0">
           <!-- Tabs -->
-          <div class="w-full flex gap-1 bg-white rounded-2xl p-1 border border-neutral-100 mb-6 animate-fade-in-up stagger-2">
+          <div class="w-full flex gap-1 glass-panel rounded-2xl p-1 mb-6 animate-fade-in-up stagger-2">
             <button
               v-for="tab in tabs"
               :key="tab.id"
@@ -168,7 +168,7 @@ function formatDate(date: Date) {
           </div>
 
           <!-- Tab: Meus Dados -->
-          <div v-if="activeTab === 'dados'" class="bg-white rounded-2xl md:rounded-3xl border border-neutral-100 p-4 md:p-6 space-y-4 md:space-y-6 animate-fade-in-up stagger-3">
+          <div v-if="activeTab === 'dados'" class="glass-panel rounded-2xl md:rounded-3xl p-4 md:p-6 space-y-4 md:space-y-6 animate-fade-in-up stagger-3">
             <h2 class="font-heading font-bold text-base text-neutral-900">Informações pessoais</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-x-6 md:gap-y-5">
@@ -215,7 +215,7 @@ function formatDate(date: Date) {
               @click="router.push(`/event/${event.id}`)"
             />
 
-            <div v-if="favorites.length === 0" class="bg-white rounded-3xl border border-neutral-100 p-12 text-center">
+            <div v-if="favorites.length === 0" class="glass-panel rounded-3xl p-12 text-center">
               <PhHeart weight="duotone" class="text-neutral-200 mx-auto mb-3" :size="40" />
               <p class="text-neutral-400 text-sm">Nenhum favorito ainda.</p>
             </div>
@@ -230,7 +230,7 @@ function formatDate(date: Date) {
               :event="getEventById(review.eventId)"
             />
 
-            <div v-if="reviews.length === 0" class="bg-white rounded-3xl border border-neutral-100 p-12 text-center">
+            <div v-if="reviews.length === 0" class="glass-panel rounded-3xl p-12 text-center">
               <PhStar weight="duotone" class="text-neutral-200 mx-auto mb-3" :size="40" />
               <p class="text-neutral-400 text-sm">Nenhuma avaliação ainda.</p>
             </div>
@@ -245,7 +245,7 @@ function formatDate(date: Date) {
               @view-ticket="openTicketModal(item)"
             />
 
-            <div v-if="purchaseHistory.length === 0" class="bg-white rounded-3xl border border-neutral-100 p-12 text-center">
+            <div v-if="purchaseHistory.length === 0" class="glass-panel rounded-3xl p-12 text-center">
               <PhTicket weight="duotone" class="text-neutral-200 mx-auto mb-3" :size="40" />
               <p class="text-neutral-400 text-sm">Nenhuma compra realizada ainda.</p>
             </div>
@@ -255,7 +255,7 @@ function formatDate(date: Date) {
         <!-- Sidebar -->
         <div class="w-full lg:w-64 flex-shrink-0 space-y-3 mt-6 lg:mt-0 animate-fade-in-up stagger-4">
           <!-- Quick info -->
-          <div class="bg-white rounded-2xl md:rounded-3xl border border-neutral-100 p-4 md:p-5">
+          <div class="glass-panel rounded-2xl md:rounded-3xl p-4 md:p-5">
             <h3 class="text-xs font-semibold uppercase tracking-widest text-neutral-400 mb-3 md:mb-4">Conta</h3>
             <div class="space-y-2 md:space-y-3">
               <div class="flex items-center gap-2 md:gap-2.5 text-sm text-neutral-600">
@@ -272,7 +272,7 @@ function formatDate(date: Date) {
           <!-- Logout card -->
           <button
             @click="showLogoutModal = true"
-            class="cursor-pointer w-full bg-white rounded-2xl md:rounded-3xl border border-neutral-100 p-3 md:p-5 flex items-center gap-2 md:gap-3 hover:border-red-200 hover:bg-red-50/50 transition-all duration-200 group text-left min-h-[44px]"
+            class="cursor-pointer w-full glass-panel rounded-2xl md:rounded-3xl p-3 md:p-5 flex items-center gap-2 md:gap-3 hover:border-red-200 hover:bg-red-50/50 transition-all duration-200 group text-left min-h-[44px]"
           >
             <div class="w-8 md:w-9 h-8 md:h-9 rounded-lg md:rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0 group-hover:bg-red-100 transition-colors">
               <PhSignOut weight="duotone" class="text-red-400" :size="16" />

@@ -324,7 +324,7 @@ onUnmounted(() => {
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
           <!-- Sinopse -->
-          <div class="md:col-span-2 bg-white rounded-2xl p-6 border border-neutral-100">
+          <div class="md:col-span-2 glass-panel rounded-2xl p-6">
             <div class="flex items-center gap-2 mb-3">
               <PhFilmSlate weight="duotone" :size="18" class="text-blue-500" />
               <span class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Sinopse</span>
@@ -343,7 +343,7 @@ onUnmounted(() => {
           </div>
 
           <!-- Faixa etária -->
-          <div class="bg-white rounded-2xl p-6 border border-neutral-100 flex flex-col justify-between">
+          <div class="glass-panel rounded-2xl p-6 flex flex-col justify-between">
             <div>
               <div class="flex items-center gap-2 mb-3">
                 <PhWarning weight="duotone" :size="18" class="text-blue-500" />
@@ -362,7 +362,7 @@ onUnmounted(() => {
           </div>
 
           <!-- Sala de exibição -->
-          <div class="bg-white rounded-2xl p-6 border border-neutral-100 ">
+          <div class="glass-panel rounded-2xl p-6">
             <div class="flex items-center gap-2 mb-3">
               <PhMapPin weight="duotone" :size="18" class="text-blue-500" />
               <span class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Sala</span>
@@ -382,7 +382,7 @@ onUnmounted(() => {
           </div>
 
           <!-- Horário -->
-          <div class="bg-white rounded-2xl p-6 border border-neutral-100 ">
+          <div class="glass-panel rounded-2xl p-6">
             <div class="flex items-center gap-2 mb-3">
               <PhCalendar weight="duotone" :size="18" class="text-blue-500" />
               <span class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Horário</span>
@@ -395,7 +395,7 @@ onUnmounted(() => {
           </div>
 
           <!-- Ingressos / CTA -->
-          <div class="bg-white rounded-2xl p-6 border border-neutral-100 flex flex-col justify-between">
+          <div class="glass-panel rounded-2xl p-6 flex flex-col justify-between">
             <div>
               <div class="flex items-center gap-2 mb-3">
                 <PhTicket weight="duotone" :size="18" class="text-blue-500" />
@@ -424,7 +424,7 @@ onUnmounted(() => {
         id="seat-map"
         class="max-w-5xl mx-auto px-6 mb-12 animate-fade-in-up stagger-4"
       >
-        <div class="bg-white rounded-2xl border border-neutral-100 shadow-sm overflow-hidden">
+        <div class="glass-panel rounded-2xl overflow-hidden">
 
           <!-- Topo do mapa -->
           <div class="px-4 md:px-8 py-4 md:py-6 border-b border-neutral-100">
@@ -547,7 +547,7 @@ onUnmounted(() => {
 
     <!-- Formulário para escrever comentário -->
     <section v-if="event && eventStatus !== 'coming-soon' && eventStatus !== 'past'" class="max-w-5xl mx-auto px-6 mb-16 animate-fade-in-up stagger-5">
-      <div class="bg-white rounded-2xl border border-neutral-100 p-6">
+      <div class="glass-panel rounded-2xl p-6">
         <div class="flex items-center justify-between mb-6">
           <h2 class="font-heading text-xl font-bold text-neutral-900">Compartilhe sua avaliação</h2>
           <button
@@ -647,7 +647,7 @@ onUnmounted(() => {
               :key="comment.id"
               class="w-full shrink-0 px-4"
             >
-              <div class="bg-white rounded-2xl p-6 border border-neutral-100">
+              <div class="glass-panel rounded-2xl p-6">
                 <div class="flex items-start justify-between mb-3">
                   <div>
                     <p class="font-heading font-bold text-neutral-900">{{ comment.author }}</p>

@@ -106,16 +106,10 @@ const classificationColor: Record<string, string> = {
                   </p>
 
                   <div class="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4">
-                    <button class="flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold text-xs md:text-base rounded-lg md:rounded-xl transition-all duration-200 active:scale-95 shadow-lg shadow-blue-500/30 min-h-[44px]">
+                    <button @click="goToEvent(movie.id)" class="flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold text-xs md:text-base rounded-lg md:rounded-xl transition-all duration-200 active:scale-95 shadow-lg shadow-blue-500/30 min-h-[44px]">
                       <PhTicket weight="duotone" :size="16" />
                       <span class="hidden md:inline">Comprar Ingresso</span>
                       <span class="md:hidden">Comprar</span>
-                    </button>
-                    <button @click="goToEvent(movie.id)"
-                      class="flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 font-semibold text-xs md:text-base rounded-lg md:rounded-xl transition-all duration-200 active:scale-95 min-h-[44px]"
-                      style="background: rgba(255,255,255,0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.25); color: white;"
-                    >
-                      Ver Detalhes
                     </button>
                   </div>
 
@@ -167,9 +161,7 @@ const classificationColor: Record<string, string> = {
             <h2 class="font-heading text-xl md:text-2xl font-bold text-neutral-900">Em Cartaz</h2>
             <p class="text-xs md:text-sm text-neutral-500 mt-1">Os melhores filmes desta semana</p>
           </div>
-          <button class="text-xs md:text-sm text-blue-500 font-medium hover:text-blue-600 transition-colors duration-200 flex items-center gap-1">
-            Ver todos <PhCaretRight :size="12" weight="bold" />
-          </button>
+
         </div>
 
         <div class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
@@ -191,9 +183,7 @@ const classificationColor: Record<string, string> = {
             <h2 class="font-heading text-xl md:text-2xl font-bold text-neutral-900">Em Breve</h2>
             <p class="text-xs md:text-sm text-neutral-500 mt-1">Fique por dentro das próximas estreias</p>
           </div>
-          <button class="text-xs md:text-sm text-blue-500 font-medium hover:text-blue-600 transition-colors duration-200 flex items-center gap-1">
-            Ver todos <PhCaretRight :size="12" weight="bold" />
-          </button>
+
         </div>
 
         <div class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
@@ -211,7 +201,7 @@ const classificationColor: Record<string, string> = {
     <section class="py-12 md:py-20 px-4 md:px-6 overflow-hidden relative animate-fade-in-up stagger-4">
       <div class="max-w-5xl mx-auto">
         <div
-          class="relative rounded-2xl md:rounded-3xl px-4 md:px-10 py-8 md:py-14 overflow-hidden"
+          class="relative rounded-3xl px-4 md:px-10 py-8 md:py-14 overflow-hidden"
           style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);"
         >
           <!-- Background decoration -->
@@ -251,7 +241,7 @@ const classificationColor: Record<string, string> = {
 
             <div class="shrink-0 w-full md:w-auto mt-4 md:mt-0">
               <div
-                class="w-full md:w-64 h-48 md:h-64 rounded-2xl md:rounded-3xl flex flex-col items-center justify-center gap-3 md:gap-4 p-4 md:p-8 text-center"
+                class="w-full md:w-64 h-48 md:h-64 rounded-3xl flex flex-col items-center justify-center gap-3 md:gap-4 p-4 md:p-8 text-center"
                 style="background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);"
               >
                 <div class="w-14 md:w-16 h-14 md:h-16 bg-blue-500 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/40">
@@ -282,9 +272,7 @@ const classificationColor: Record<string, string> = {
             </div>
             <p class="text-xs md:text-sm text-neutral-500">Premiados e aclamados pela crítica mundial</p>
           </div>
-          <button class="text-xs md:text-sm text-blue-500 font-medium hover:text-blue-600 transition-colors duration-200 flex items-center gap-1 flex-shrink-0">
-            Ver todos <PhCaretRight :size="12" weight="bold" />
-          </button>
+
         </div>
 
         <div class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">

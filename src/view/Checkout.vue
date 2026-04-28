@@ -181,10 +181,7 @@ onMounted(() => {
           <p class="text-xs text-neutral-400 mb-6 md:mb-8">Número do pedido: <span class="font-mono font-semibold text-neutral-600">{{ orderId }}</span></p>
 
           <!-- Resumo do ingresso -->
-          <div
-            class="rounded-2xl p-5 mb-6 text-left"
-            style="background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.6); "
-          >
+          <div class="glass-panel rounded-2xl p-5 mb-6 text-left">
             <div class="flex items-start gap-4">
               <img
                 v-if="event"
@@ -243,10 +240,7 @@ onMounted(() => {
           <div class="lg:col-span-2 space-y-4 animate-fade-in-up stagger-2">
 
             <!-- Seleção de método -->
-            <div
-              class="rounded-2xl overflow-hidden"
-              style="background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.6); "
-            >
+            <div class="glass-panel rounded-2xl overflow-hidden">
               <div class="px-4 md:px-6 py-3 md:py-4 border-b border-neutral-100">
                 <p class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Forma de pagamento</p>
               </div>
@@ -276,8 +270,7 @@ onMounted(() => {
               <div
                 v-if="paymentMethod === 'pix'"
                 key="pix"
-                class="rounded-2xl overflow-hidden"
-                style="background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.6); "
+                class="glass-panel rounded-2xl overflow-hidden"
               >
                 <div class="px-6 py-4 border-b border-neutral-100">
                   <p class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Pagamento via PIX</p>
@@ -285,7 +278,7 @@ onMounted(() => {
 
                 <div class="p-6 flex flex-col items-center gap-6">
                   <!-- QR Code mockado -->
-                  <div class="p-4 bg-white rounded-2xl border border-neutral-100 ">
+                  <div class="p-4 bg-white/60 rounded-2xl border border-white/40 shadow-sm">
                     <div class="w-44 h-44 relative" aria-label="QR Code PIX">
                       <!-- Grid pattern simulando QR code -->
                       <svg viewBox="0 0 200 200" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -361,8 +354,7 @@ onMounted(() => {
               <div
                 v-if="paymentMethod === 'card'"
                 key="card"
-                class="rounded-2xl overflow-hidden"
-                style="background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.6); "
+                class="glass-panel rounded-2xl overflow-hidden"
               >
                 <div class="px-6 py-4 border-b border-neutral-100">
                   <p class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Dados do cartão</p>
@@ -450,8 +442,7 @@ onMounted(() => {
               <div
                 v-if="paymentMethod === 'boleto'"
                 key="boleto"
-                class="rounded-2xl overflow-hidden"
-                style="background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.6); "
+                class="glass-panel rounded-2xl overflow-hidden"
               >
                 <div class="px-6 py-4 border-b border-neutral-100">
                   <p class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Boleto bancário</p>
@@ -460,7 +451,7 @@ onMounted(() => {
                 <div class="p-6 space-y-5">
 
                   <!-- Visual do boleto -->
-                  <div class="p-5 bg-white rounded-xl border border-neutral-100">
+                  <div class="p-5 bg-white/60 rounded-xl border border-white/40 shadow-sm">
                     <!-- Barras simuladas -->
                     <div class="flex gap-px mb-4" aria-hidden="true">
                       <template v-for="i in 60" :key="i">
@@ -515,10 +506,7 @@ onMounted(() => {
           <!-- Sidebar: Resumo do pedido -->
           <div class="space-y-4 animate-fade-in-up stagger-3">
 
-            <div
-              class="rounded-2xl overflow-hidden sticky top-24"
-              style="background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.6); "
-            >
+            <div class="glass-panel rounded-2xl overflow-hidden sticky top-24">
               <div class="px-5 py-4 border-b border-neutral-100">
                 <p class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Resumo do pedido</p>
               </div>

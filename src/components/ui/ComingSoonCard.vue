@@ -16,7 +16,7 @@ defineEmits<{ click: [] }>()
     class="shrink-0 w-44 snap-start cursor-pointer group"
     @click="$emit('click')"
   >
-    <div class="relative rounded-xl overflow-hidden mb-3 aspect-2/3 bg-neutral-200">
+    <div class="relative rounded-3xl overflow-hidden mb-3 aspect-2/3 bg-neutral-200">
       <img
         :src="movie.poster"
         :alt="movie.title"
