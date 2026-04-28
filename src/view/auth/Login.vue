@@ -51,7 +51,7 @@ async function handleLogin() {
     <!-- Form content -->
     <div class="w-full max-w-sm relative z-10">
 
-      <div class="text-center mb-10">
+      <div class="text-center mb-10 animate-fade-in-up stagger-1">
         <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-500 mb-6 shadow-lg shadow-blue-500/25">
           <PhFilmSlate weight="duotone" class="text-white" :size="28" />
         </div>
@@ -61,7 +61,7 @@ async function handleLogin() {
 
       <form
         @submit.prevent="handleLogin"
-        class="rounded-3xl bg-white/80 backdrop-blur-xl p-8 shadow-xl shadow-black/5 border border-white/60 space-y-4"
+        class="rounded-3xl bg-white/80 backdrop-blur-xl p-8 shadow-xl shadow-black/5 border border-white/60 space-y-4 animate-fade-in-up stagger-2"
       >
         <Input
           label="E-mail"
@@ -98,7 +98,7 @@ async function handleLogin() {
         </p>
       </form>
 
-      <p class="text-center text-xs text-neutral-400 mt-8">
+      <p class="text-center text-xs text-neutral-400 mt-8 animate-fade-in-up stagger-3">
         Demo: usuario@ticket.com / 123456
       </p>
     </div>

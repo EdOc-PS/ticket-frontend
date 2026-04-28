@@ -232,7 +232,7 @@ onMounted(() => {
     <div v-if="step === 'payment' && event" class="pt-20 md:pt-24 pb-12 md:pb-16 px-4 md:px-6">
       <div class="max-w-5xl mx-auto">
 
-        <div class="mb-6">
+        <div class="mb-6 animate-fade-in-up stagger-1">
           <h1 class="font-heading text-xl md:text-2xl font-bold text-neutral-900">Finalizar compra</h1>
           <p class="text-xs md:text-sm text-neutral-500 mt-1">Escolha a forma de pagamento e confirme seu pedido</p>
         </div>
@@ -240,7 +240,7 @@ onMounted(() => {
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
 
           <!-- Coluna principal: Pagamento -->
-          <div class="lg:col-span-2 space-y-4">
+          <div class="lg:col-span-2 space-y-4 animate-fade-in-up stagger-2">
 
             <!-- Seleção de método -->
             <div
@@ -513,7 +513,7 @@ onMounted(() => {
           </div>
 
           <!-- Sidebar: Resumo do pedido -->
-          <div class="space-y-4">
+          <div class="space-y-4 animate-fade-in-up stagger-3">
 
             <div
               class="rounded-2xl overflow-hidden sticky top-24"

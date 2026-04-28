@@ -97,7 +97,7 @@ function formatDate(date: Date) {
     <div class="max-w-5xl mx-auto px-4 md:px-6 pt-24 md:pt-28 pb-16 md:pb-20">
 
       <!-- Profile header card -->
-      <div class="bg-white rounded-2xl md:rounded-3xl border border-neutral-100 overflow-hidden mb-6">
+      <div class="bg-white rounded-2xl md:rounded-3xl border border-neutral-100 overflow-hidden mb-6 animate-fade-in-up stagger-1">
         <!-- Cover -->
         <div class="h-24 md:h-28 relative" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #06b6d4 100%);">
           <div class="absolute inset-0 opacity-20"
@@ -152,7 +152,7 @@ function formatDate(date: Date) {
         <!-- Main content -->
         <div class="flex-1 min-w-0">
           <!-- Tabs -->
-          <div class="w-full flex gap-1 bg-white rounded-2xl p-1 border border-neutral-100 mb-6">
+          <div class="w-full flex gap-1 bg-white rounded-2xl p-1 border border-neutral-100 mb-6 animate-fade-in-up stagger-2">
             <button
               v-for="tab in tabs"
               :key="tab.id"
@@ -168,7 +168,7 @@ function formatDate(date: Date) {
           </div>
 
           <!-- Tab: Meus Dados -->
-          <div v-if="activeTab === 'dados'" class="bg-white rounded-2xl md:rounded-3xl border border-neutral-100 p-4 md:p-6 space-y-4 md:space-y-6">
+          <div v-if="activeTab === 'dados'" class="bg-white rounded-2xl md:rounded-3xl border border-neutral-100 p-4 md:p-6 space-y-4 md:space-y-6 animate-fade-in-up stagger-3">
             <h2 class="font-heading font-bold text-base text-neutral-900">Informações pessoais</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-x-6 md:gap-y-5">
@@ -207,7 +207,7 @@ function formatDate(date: Date) {
           </div>
 
           <!-- Tab: Favoritos -->
-          <div v-if="activeTab === 'favoritos'" class="space-y-3">
+          <div v-if="activeTab === 'favoritos'" class="space-y-3 animate-fade-in-up stagger-3">
             <FavoriteCard
               v-for="event in favorites"
               :key="event.id"
@@ -222,7 +222,7 @@ function formatDate(date: Date) {
           </div>
 
           <!-- Tab: Avaliações -->
-          <div v-if="activeTab === 'avaliacoes'" class="space-y-3">
+          <div v-if="activeTab === 'avaliacoes'" class="space-y-3 animate-fade-in-up stagger-3">
             <ReviewCard
               v-for="review in reviews"
               :key="review.eventId"
@@ -237,7 +237,7 @@ function formatDate(date: Date) {
           </div>
 
           <!-- Tab: Histórico -->
-          <div v-if="activeTab === 'historico'" class="space-y-3">
+          <div v-if="activeTab === 'historico'" class="space-y-3 animate-fade-in-up stagger-3">
             <HistoryCard
               v-for="item in purchaseHistory"
               :key="item.id"
@@ -253,7 +253,7 @@ function formatDate(date: Date) {
         </div>
 
         <!-- Sidebar -->
-        <div class="w-full lg:w-64 flex-shrink-0 space-y-3 mt-6 lg:mt-0">
+        <div class="w-full lg:w-64 flex-shrink-0 space-y-3 mt-6 lg:mt-0 animate-fade-in-up stagger-4">
           <!-- Quick info -->
           <div class="bg-white rounded-2xl md:rounded-3xl border border-neutral-100 p-4 md:p-5">
             <h3 class="text-xs font-semibold uppercase tracking-widest text-neutral-400 mb-3 md:mb-4">Conta</h3>

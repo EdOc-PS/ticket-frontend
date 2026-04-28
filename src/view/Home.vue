@@ -62,7 +62,7 @@ const classificationColor: Record<string, string> = {
     <Header />
 
     <!-- Hero slider -->
-    <section id="inicio" class="relative h-[70vh] md:h-[90vh] overflow-hidden scroll-mt-24" @mouseenter="stopAutoplay" @mouseleave="startAutoplay">
+    <section id="inicio" class="relative h-[70vh] md:h-[90vh] overflow-hidden scroll-mt-24 animate-fade-in-up stagger-1" @mouseenter="stopAutoplay" @mouseleave="startAutoplay">
       <!-- Slides -->
       <div class="relative w-full h-full">
         <transition-group name="slide-fade">
@@ -160,7 +160,7 @@ const classificationColor: Record<string, string> = {
     </section>
 
     <!-- Em Cartaz -->
-    <section id="em-cartaz" class="py-12 md:py-16 px-4 md:px-6 scroll-mt-24">
+    <section id="em-cartaz" class="py-12 md:py-16 px-4 md:px-6 scroll-mt-24 animate-fade-in-up stagger-2">
       <div class="max-w-5xl mx-auto">
         <div class="flex items-center justify-between mb-6 md:mb-8">
           <div>
@@ -184,7 +184,7 @@ const classificationColor: Record<string, string> = {
     </section>
 
     <!-- Em Breve -->
-    <section id="em-breve" class="py-12 md:py-16 px-4 md:px-6 bg-white/50 scroll-mt-24">
+    <section id="em-breve" class="py-12 md:py-16 px-4 md:px-6 bg-white/50 scroll-mt-24 animate-fade-in-up stagger-3">
       <div class="max-w-5xl mx-auto">
         <div class="flex items-center justify-between mb-6 md:mb-8">
           <div>
@@ -208,7 +208,7 @@ const classificationColor: Record<string, string> = {
     </section>
 
     <!-- Promo section (inspired by print 3) -->
-    <section class="py-12 md:py-20 px-4 md:px-6 overflow-hidden relative">
+    <section class="py-12 md:py-20 px-4 md:px-6 overflow-hidden relative animate-fade-in-up stagger-4">
       <div class="max-w-5xl mx-auto">
         <div
           class="relative rounded-2xl md:rounded-3xl px-4 md:px-10 py-8 md:py-14 overflow-hidden"
@@ -272,7 +272,7 @@ const classificationColor: Record<string, string> = {
     </section>
 
     <!-- Filmes em Festival -->
-    <section id="festivais" class="py-12 md:py-16 px-4 md:px-6 pb-16 md:pb-24 scroll-mt-24">
+    <section id="festivais" class="py-12 md:py-16 px-4 md:px-6 pb-16 md:pb-24 scroll-mt-24 animate-fade-in-up stagger-5">
       <div class="max-w-5xl mx-auto">
         <div class="flex items-start md:items-center justify-between mb-6 md:mb-8 gap-4">
           <div>

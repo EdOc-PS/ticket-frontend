@@ -241,7 +241,7 @@ onUnmounted(() => {
     <div v-if="event" class="pt-20">
 
       <!-- Alert para eventos não disponíveis -->
-      <div v-if="!isAvailable" class="max-w-5xl mx-auto px-6 mb-6">
+      <div v-if="!isAvailable" class="max-w-5xl mx-auto px-6 mb-6 animate-fade-in-up stagger-1">
         <div class="bg-red-50 border border-red-200 rounded-2xl p-4 flex items-start gap-3">
           <PhWarning weight="duotone" class="text-red-500 flex-shrink-0 mt-0.5" :size="20" />
           <div>
@@ -252,7 +252,7 @@ onUnmounted(() => {
       </div>
 
       <!-- Alert para eventos em breve -->
-      <div v-if="eventStatus === 'coming-soon'" class="max-w-5xl mx-auto px-6 mb-6">
+      <div v-if="eventStatus === 'coming-soon'" class="max-w-5xl mx-auto px-6 mb-6 animate-fade-in-up stagger-1">
         <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 flex items-start gap-3">
           <PhCalendar weight="duotone" class="text-blue-500 flex-shrink-0 mt-0.5" :size="20" />
           <div>
@@ -263,7 +263,7 @@ onUnmounted(() => {
       </div>
 
       <!-- Slide de imagens -->
-      <section class="max-w-5xl mx-auto px-6 mb-8">
+      <section class="max-w-5xl mx-auto px-6 mb-8 animate-fade-in-up stagger-2">
         <div class="relative w-full h-[420px] rounded-3xl overflow-hidden bg-neutral-200" :class="{ 'opacity-60': !isAvailable }">
           <transition-group name="fade">
             <img
@@ -320,7 +320,7 @@ onUnmounted(() => {
       </section>
 
       <!-- Cards informativos -->
-      <section class="max-w-5xl mx-auto px-6 mb-8">
+      <section class="max-w-5xl mx-auto px-6 mb-8 animate-fade-in-up stagger-3">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
           <!-- Sinopse -->
@@ -422,7 +422,7 @@ onUnmounted(() => {
       <section
         v-if="showSeatMap && seatMapData && isAvailable"
         id="seat-map"
-        class="max-w-5xl mx-auto px-6 mb-12"
+        class="max-w-5xl mx-auto px-6 mb-12 animate-fade-in-up stagger-4"
       >
         <div class="bg-white rounded-2xl border border-neutral-100 shadow-sm overflow-hidden">
 
@@ -528,7 +528,7 @@ onUnmounted(() => {
     </div>
 
     <!-- Estado de erro: evento não encontrado -->
-    <div v-if="!event" class="flex flex-col items-center justify-center min-h-[70vh] px-6">
+    <div v-if="!event" class="flex flex-col items-center justify-center min-h-[70vh] px-6 animate-fade-in-up stagger-1">
       <div class="text-center max-w-sm">
         <div class="w-20 h-20 rounded-3xl bg-neutral-100 flex items-center justify-center mx-auto mb-6">
           <PhFilmSlate weight="duotone" class="text-neutral-300" :size="40" />
@@ -546,7 +546,7 @@ onUnmounted(() => {
     </div>
 
     <!-- Formulário para escrever comentário -->
-    <section v-if="event && eventStatus !== 'coming-soon' && eventStatus !== 'past'" class="max-w-5xl mx-auto px-6 mb-16">
+    <section v-if="event && eventStatus !== 'coming-soon' && eventStatus !== 'past'" class="max-w-5xl mx-auto px-6 mb-16 animate-fade-in-up stagger-5">
       <div class="bg-white rounded-2xl border border-neutral-100 p-6">
         <div class="flex items-center justify-between mb-6">
           <h2 class="font-heading text-xl font-bold text-neutral-900">Compartilhe sua avaliação</h2>
@@ -615,7 +615,7 @@ onUnmounted(() => {
     </section>
 
     <!-- Avaliações e comentários -->
-    <section v-if="event && eventStatus !== 'coming-soon' && eventStatus !== 'past'" class="max-w-5xl mx-auto px-6 mb-16">
+    <section v-if="event && eventStatus !== 'coming-soon' && eventStatus !== 'past'" class="max-w-5xl mx-auto px-6 mb-16 animate-fade-in-up stagger-6">
       <div class="flex items-end justify-between mb-8">
         <div>
           <h2 class="font-heading text-2xl font-bold text-neutral-900">Avaliações e comentários</h2>
