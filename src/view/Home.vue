@@ -177,8 +177,15 @@ const classificationColor: Record<string, string> = {
     </section>
 
     <!-- Em Breve -->
-    <section id="em-breve" class="py-12 md:py-16 px-4 md:px-6 bg-white/50 scroll-mt-24 animate-fade-in-up stagger-3">
-      <div class="max-w-5xl mx-auto">
+    <section id="em-breve" class="py-12 md:py-16 px-4 md:px-6 bg-white/50 scroll-mt-24 animate-fade-in-up stagger-3 relative overflow-hidden">
+      <!-- Fundo Film Strip decorativo -->
+      <div class="absolute top-1/2 right-[-150px] md:right-[-100px] rotate-[135deg] -translate-y-1/2 opacity-[0.04] text-neutral-800 pointer-events-none z-0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="580" height="580" fill="currentColor" viewBox="0 0 256 256">
+          <path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,88h80v80H40Zm96-16V56h32V72Zm-16,0H88V56h32Zm0,112v16H88V184Zm16,0h32v16H136Zm0-16V88h80v80Zm80-96H184V56h32ZM72,56V72H40V56ZM40,184H72v16H40Zm176,16H184V184h32v16Z"></path>
+        </svg>
+      </div>
+
+      <div class="max-w-5xl mx-auto relative z-10">
         <div class="flex items-center justify-between mb-6 md:mb-8">
           <div>
             <h2 class="font-heading text-xl md:text-2xl font-bold text-neutral-900">Em Breve</h2>
