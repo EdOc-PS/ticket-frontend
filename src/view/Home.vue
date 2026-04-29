@@ -16,6 +16,7 @@ import Footer from '../components/layout/Footer.vue'
 import NowPlayingCard from '../components/ui/NowPlayingCard.vue'
 import ComingSoonCard from '../components/ui/ComingSoonCard.vue'
 import FestivalCard from '../components/ui/FestivalCard.vue'
+import MemphisBackgroundStatic from '../components/ui/MemphisBackgroundStatic.vue'
 
 const currentSlide = ref(0)
 const isTransitioning = ref(false)
@@ -205,8 +206,7 @@ const classificationColor: Record<string, string> = {
           style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);"
         >
           <!-- Background decoration -->
-          <div class="absolute top-0 right-0 w-96 h-96 rounded-full opacity-10" style="background: radial-gradient(circle, #3b82f6, transparent); transform: translate(30%, -30%);"></div>
-          <div class="absolute bottom-0 left-0 w-64 h-64 rounded-full opacity-10" style="background: radial-gradient(circle, #8b5cf6, transparent); transform: translate(-30%, 30%);"></div>
+          <MemphisBackgroundStatic />
 
           <div class="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-10">
             <div class="flex-1">
@@ -251,7 +251,7 @@ const classificationColor: Record<string, string> = {
                   <p class="text-white font-semibold text-xs md:text-sm">Ingresso Digital</p>
                   <p class="text-white/50 text-xs mt-1">QR Code no celular</p>
                 </div>
-                <button class="w-full py-2 md:py-2.5 bg-blue-500 hover:bg-blue-600 text-white text-xs md:text-sm font-semibold rounded-lg md:rounded-xl transition-all duration-200 active:scale-95 min-h-[44px]">
+                <button class="w-full cursor-pointer py-2 md:py-2.5 bg-red-500 hover:bg-red-600 text-white text-xs md:text-sm font-semibold rounded-lg md:rounded-xl transition-all duration-200 active:scale-95 min-h-[44px]">
                   Começar agora
                 </button>
               </div>

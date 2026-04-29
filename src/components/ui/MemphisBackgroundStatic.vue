@@ -1,0 +1,176 @@
+<script setup lang="ts">
+import {
+  PhFilmSlate,
+  PhFilmReel,
+  PhFilmStrip,
+  PhPopcorn,
+  PhTicket,
+  PhVideoCamera,
+  PhStar,
+  PhProjectorScreen,
+  PhMonitorPlay,
+} from '@phosphor-icons/vue'
+
+// Memphis-style scattered items - each has position, size, rotation, opacity, color
+const items = [
+  // Top-left cluster
+  { icon: PhFilmSlate, x: 4, y: 5, size: 52, rotate: -15, opacity: 0.28, color: '#3b82f6' },
+  { icon: PhStar, x: 20, y: 8, size: 20, rotate: 25, opacity: 0.18, color: '#f87171' },
+  { icon: PhTicket, x: 8, y: 22, size: 36, rotate: 40, opacity: 0.22, color: '#ef4444' },
+
+  // Top-right cluster
+  { icon: PhPopcorn, x: 78, y: 4, size: 48, rotate: 12, opacity: 0.30, color: '#ef4444' },
+  { icon: PhFilmReel, x: 90, y: 15, size: 28, rotate: -30, opacity: 0.20, color: '#3b82f6' },
+  { icon: PhVideoCamera, x: 68, y: 18, size: 22, rotate: 20, opacity: 0.16, color: '#60a5fa' },
+
+  // Left side
+  { icon: PhMonitorPlay, x: 3, y: 45, size: 40, rotate: -20, opacity: 0.24, color: '#60a5fa' },
+  { icon: PhFilmStrip, x: 10, y: 65, size: 56, rotate: 35, opacity: 0.22, color: '#fca5a5' },
+  { icon: PhStar, x: 5, y: 82, size: 18, rotate: -45, opacity: 0.18, color: '#ef4444' },
+
+  // Right side
+  { icon: PhProjectorScreen, x: 85, y: 40, size: 44, rotate: 15, opacity: 0.25, color: '#3b82f6' },
+  { icon: PhTicket, x: 92, y: 60, size: 30, rotate: -25, opacity: 0.20, color: '#f87171' },
+  { icon: PhFilmSlate, x: 80, y: 78, size: 38, rotate: 30, opacity: 0.24, color: '#ef4444' },
+
+  // Bottom
+  { icon: PhPopcorn, x: 25, y: 88, size: 34, rotate: -10, opacity: 0.22, color: '#3b82f6' },
+  { icon: PhVideoCamera, x: 55, y: 92, size: 26, rotate: 45, opacity: 0.18, color: '#f87171' },
+  { icon: PhFilmReel, x: 72, y: 90, size: 46, rotate: -35, opacity: 0.26, color: '#ef4444' },
+
+  // Center-outskirts (far from form)
+  { icon: PhStar, x: 30, y: 12, size: 16, rotate: 60, opacity: 0.15, color: '#93c5fd' },
+  { icon: PhFilmStrip, x: 65, y: 10, size: 32, rotate: -50, opacity: 0.18, color: '#fca5a5' },
+  { icon: PhMonitorPlay, x: 18, y: 42, size: 24, rotate: 15, opacity: 0.15, color: '#ef4444' },
+  { icon: PhProjectorScreen, x: 75, y: 55, size: 28, rotate: -20, opacity: 0.16, color: '#3b82f6' },
+  { icon: PhTicket, x: 42, y: 90, size: 22, rotate: 30, opacity: 0.15, color: '#93c5fd' },
+]
+
+// Memphis geometric shapes (circles, dots, lines, crosses)
+const shapes = [
+  // Dots
+  { type: 'dot', x: 15, y: 15, size: 12, color: '#3b82f6', opacity: 0.28 },
+  { type: 'dot', x: 88, y: 25, size: 8, color: '#ef4444', opacity: 0.22 },
+  { type: 'dot', x: 10, y: 75, size: 14, color: '#60a5fa', opacity: 0.20 },
+  { type: 'dot', x: 92, y: 80, size: 10, color: '#f87171', opacity: 0.24 },
+  { type: 'dot', x: 35, y: 5, size: 7, color: '#ef4444', opacity: 0.30 },
+  { type: 'dot', x: 60, y: 95, size: 11, color: '#3b82f6', opacity: 0.22 },
+
+  // Rings
+  { type: 'ring', x: 22, y: 30, size: 28, color: '#ef4444', opacity: 0.22 },
+  { type: 'ring', x: 82, y: 50, size: 20, color: '#3b82f6', opacity: 0.18 },
+  { type: 'ring', x: 50, y: 8, size: 18, color: '#f87171', opacity: 0.22 },
+  { type: 'ring', x: 8, y: 55, size: 24, color: '#60a5fa', opacity: 0.16 },
+
+  // Crosses
+  { type: 'cross', x: 28, y: 75, size: 16, color: '#ef4444', opacity: 0.24 },
+  { type: 'cross', x: 75, y: 30, size: 14, color: '#3b82f6', opacity: 0.20 },
+  { type: 'cross', x: 45, y: 3, size: 12, color: '#3b82f6', opacity: 0.22 },
+  { type: 'cross', x: 90, y: 70, size: 14, color: '#fca5a5', opacity: 0.18 },
+
+  // Zigzag lines (short)
+  { type: 'zigzag', x: 18, y: 50, size: 36, color: '#93c5fd', opacity: 0.18 },
+  { type: 'zigzag', x: 80, y: 88, size: 30, color: '#ef4444', opacity: 0.16 },
+]
+</script>
+
+<template>
+  <div class="memphis-bg absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+    <!-- Gradient base -->
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 20% 30%, rgba(59,130,246,0.18) 0%, transparent 65%), radial-gradient(ellipse at 80% 70%, rgba(239,68,68,0.18) 0%, transparent 65%);" />
+
+    <!-- Phosphor icon elements -->
+    <component
+      v-for="(item, i) in items"
+      :key="'icon-' + i"
+      :is="item.icon"
+      weight="duotone"
+      :size="item.size"
+      class="memphis-icon absolute"
+      :style="{
+        left: item.x + '%',
+        top: item.y + '%',
+        transform: `rotate(${item.rotate}deg)`,
+        opacity: item.opacity,
+        color: item.color,
+      }"
+    />
+
+    <!-- Geometric shapes -->
+    <template v-for="(shape, i) in shapes" :key="'shape-' + i">
+      <!-- Dots -->
+      <div
+        v-if="shape.type === 'dot'"
+        class="memphis-shape absolute rounded-full"
+        :style="{
+          left: shape.x + '%',
+          top: shape.y + '%',
+          width: shape.size + 'px',
+          height: shape.size + 'px',
+          backgroundColor: shape.color,
+          opacity: shape.opacity,
+        }"
+      />
+
+      <!-- Rings -->
+      <div
+        v-if="shape.type === 'ring'"
+        class="memphis-shape absolute rounded-full"
+        :style="{
+          left: shape.x + '%',
+          top: shape.y + '%',
+          width: shape.size + 'px',
+          height: shape.size + 'px',
+          border: '2px solid ' + shape.color,
+          opacity: shape.opacity,
+        }"
+      />
+
+      <!-- Crosses (+) -->
+      <svg
+        v-if="shape.type === 'cross'"
+        class="memphis-shape absolute"
+        :width="shape.size"
+        :height="shape.size"
+        :style="{
+          left: shape.x + '%',
+          top: shape.y + '%',
+          opacity: shape.opacity,
+        }"
+        viewBox="0 0 12 12"
+      >
+        <line x1="6" y1="1" x2="6" y2="11" :stroke="shape.color" stroke-width="2" stroke-linecap="round" />
+        <line x1="1" y1="6" x2="11" y2="6" :stroke="shape.color" stroke-width="2" stroke-linecap="round" />
+      </svg>
+
+      <!-- Zigzag -->
+      <svg
+        v-if="shape.type === 'zigzag'"
+        class="memphis-shape absolute"
+        :width="shape.size"
+        :height="Math.round(shape.size * 0.4)"
+        :style="{
+          left: shape.x + '%',
+          top: shape.y + '%',
+          opacity: shape.opacity,
+        }"
+        :viewBox="`0 0 ${shape.size} ${Math.round(shape.size * 0.4)}`"
+      >
+        <polyline
+          :points="`0,${Math.round(shape.size * 0.35)} ${Math.round(shape.size * 0.2)},${Math.round(shape.size * 0.05)} ${Math.round(shape.size * 0.4)},${Math.round(shape.size * 0.35)} ${Math.round(shape.size * 0.6)},${Math.round(shape.size * 0.05)} ${Math.round(shape.size * 0.8)},${Math.round(shape.size * 0.35)} ${shape.size},${Math.round(shape.size * 0.05)}`"
+          fill="none"
+          :stroke="shape.color"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </template>
+  </div>
+</template>
+
+<style scoped>
+.memphis-bg {
+  z-index: 1;
+}
+</style>
