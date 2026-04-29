@@ -24,6 +24,7 @@ import FavoriteCard from '../components/ui/FavoriteCard.vue'
 import ReviewCard from '../components/ui/ReviewCard.vue'
 import HistoryCard from '../components/ui/HistoryCard.vue'
 import TicketModal from '../components/ui/TicketModal.vue'
+import MemphisBackgroundStatic from '../components/ui/MemphisBackgroundStatic.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -99,9 +100,8 @@ function formatDate(date: Date) {
       <!-- Profile header card -->
       <div class="glass-panel rounded-2xl md:rounded-3xl overflow-hidden mb-6 animate-fade-in-up stagger-1">
         <!-- Cover -->
-        <div class="h-24 md:h-28 relative" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #06b6d4 100%);">
-          <div class="absolute inset-0 opacity-20"
-            style="background-image: radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px); background-size: 40px 40px;" />
+        <div class="h-24 md:h-28 relative" style="background: linear-gradient(135deg, rgb(26, 26, 46) 0%, rgb(22, 33, 62) 50%, rgb(15, 52, 96) 100%);">
+          <MemphisBackgroundStatic />
         </div>
 
         <div class="px-4 md:px-8 pb-4 md:pb-6">
