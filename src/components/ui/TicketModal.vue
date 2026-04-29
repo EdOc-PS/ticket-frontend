@@ -265,7 +265,7 @@ function handleShare() {
                 Compartilhar
               </button>
               <button
-                class="flex-1 cursor-pointer flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold transition-all duration-200 active:scale-[0.98]"
+                class="flex-1 cursor-pointer flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-semibold transition-all duration-200 active:scale-[0.98]"
               >
                 <PhDownloadSimple weight="duotone" :size="15" />
                 Salvar

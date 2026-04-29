@@ -408,7 +408,7 @@ onUnmounted(() => {
             <button
               @click="openSeatMap"
               :disabled="!isAvailable"
-              class="mt-6 w-full py-3 px-4 bg-blue-500 hover:bg-blue-600 disabled:bg-neutral-300 disabled:cursor-not-allowed active:scale-[0.98] text-white font-semibold text-sm rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
+              class="mt-6 w-full py-3 px-4 bg-red-500 hover:bg-red-600 disabled:bg-neutral-300 disabled:cursor-not-allowed active:scale-[0.98] text-white font-semibold text-sm rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
             >
               <PhArmchair weight="duotone" :size="18" />
               {{ eventStatus === 'coming-soon' ? 'Em Breve' : eventStatus === 'past' ? 'Indisponível' : 'Comprar Ingresso' }}

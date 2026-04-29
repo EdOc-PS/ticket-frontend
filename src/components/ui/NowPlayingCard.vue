@@ -47,7 +47,7 @@ const classificationColor: Record<string, string> = {
 
       <!-- Buy button on hover -->
       <div class="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-        <button class="w-full py-2 bg-blue-500 text-white text-xs font-semibold rounded-lg">
+        <button class="w-full py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded-lg transition-colors">
           Comprar
         </button>
       </div>

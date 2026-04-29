@@ -52,7 +52,7 @@ async function handleLogin() {
     <div class="w-full max-w-sm relative z-10">
 
       <div class="text-center mb-10 animate-fade-in-up stagger-1">
-        <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-500 mb-6 shadow-lg shadow-blue-500/25">
+        <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-red-500 mb-6 shadow-lg shadow-red-500/25">
           <PhFilmSlate weight="duotone" class="text-white" :size="28" />
         </div>
         <h1 class="font-heading text-2xl font-bold text-neutral-900 tracking-tight">Bem-vindo</h1>
@@ -87,12 +87,12 @@ async function handleLogin() {
         </div>
 
         <div class="pt-2">
-          <Button label="Entrar" type="submit" :loading="loading" />
+          <Button label="Entrar" type="submit" color="red" :loading="loading" />
         </div>
 
         <p class="text-center text-xs text-neutral-400">
           Não tem uma conta?
-          <router-link to="/auth/register" class="text-blue-500 hover:text-blue-600 font-medium transition-colors">
+          <router-link to="/auth/register" class="text-red-500 hover:text-red-600 font-medium transition-colors">
             Criar conta
           </router-link>
         </p>
