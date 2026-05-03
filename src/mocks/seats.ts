@@ -99,7 +99,15 @@ function generateSeatsForEvent(
 }
 
 export function getSeatMapByEventId(eventId: number): SeatMap | undefined {
-  return mockSeatMaps.find(map => map.eventId === eventId)
+  let map = mockSeatMaps.find(map => map.eventId === eventId)
+  if (!map) {
+    // Generate a default seat map for events not explicitly mocked
+    map = {
+      eventId,
+      rows: generateSeatsForEvent(eventId, 'normal', 50, 'vip', 80, 'camarote', 120)
+    }
+  }
+  return map
 }
 
 export function updateSeatStatus(eventId: number, seatNumber: string, status: 'available' | 'occupied' | 'selected'): void {
